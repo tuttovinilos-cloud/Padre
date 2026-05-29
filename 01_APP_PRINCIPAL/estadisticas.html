@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es" class="loading-menu">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Estadísticas · Tuttovinilos</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f9;
+  --panel:#ffffff;
+  --panel2:#f8f9ff;
+  --border:#d9deea;
+  --border2:#cbd3e6;
+  --text:#111827;
+  --muted:#6b7280;
+  --muted2:#475569;
+  --accent:#153bff;
+  --accent2:#0b1f7a;
+  --green:#16a34a;
+  --red:#dc2626;
+  --yellow:#f59e0b;
+  --orange:#ff8616;
+  --mono:'Roboto Mono',monospace;
+  --head:'Montserrat',Arial,sans-serif;
+  --body:'Inter',Arial,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  min-height:100vh;
+  padding-bottom:90px;
+  -webkit-tap-highlight-color:transparent;
+}
+button,input,select{font:inherit}
+button{touch-action:manipulation}
+#authTopbar{display:none!important}
+.header{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:58px;
+  position:sticky;
+  top:0;
+  z-index:300;
+  box-shadow:0 8px 24px rgba(21,59,255,.24);
+  flex-wrap:wrap;
+}
+.logo{
+  font-family:var(--head);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:2.6px;
+  color:#fff;
+  text-transform:uppercase;
+  white-space:nowrap;
+  border:1px dashed rgba(255,255,255,.55);
+  border-radius:10px;
+  padding:8px 12px;
+}
+.logo small{color:rgba(255,255,255,.72);font-weight:700;font-size:10px;letter-spacing:1.4px;margin-left:6px}
+.mobile-menu-btn{
+  display:none;
+  font-family:var(--head);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.09);
+  color:#fff;
+  border-radius:999px;
+  cursor:pointer;
+  margin-left:auto;
+}
+.header-tabs{display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.tab-btn,.menu-status{
+  font-family:var(--head);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  padding:8px 13px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.84);
+  cursor:pointer;
+  border-radius:999px;
+  transition:all .2s;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:38px;
+}
+.tab-btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.tab-btn.active{background:#fff;color:var(--accent);border-color:#fff;box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.menu-status{cursor:default}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;display:inline-block}
+.menu-extra{display:flex;align-items:center;gap:8px}
+.toolbar{
+  display:grid;
+  grid-template-columns:150px 150px minmax(260px,1fr) auto auto;
+  gap:10px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  align-items:center;
+  position:sticky;
+  top:58px;
+  z-index:260;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 22px rgba(15,23,42,.08);
+}
+.search-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  border:1.5px solid var(--border);
+  border-radius:999px;
+  padding:9px 13px;
+  min-height:42px;
+}
+.search-wrap input{
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+  min-height:auto;
+  padding:0;
+  font-family:var(--body);
+  font-size:14px;
+  color:var(--text);
+}
+input,select{
+  background:#fff;
+  border:1.5px solid var(--border);
+  color:var(--text);
+  border-radius:999px;
+  padding:9px 12px;
+  outline:none;
+  font-family:var(--body);
+  font-size:13px;
+  font-weight:700;
+  min-height:42px;
+}
+input:focus,select:focus,.search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(21,59,255,.10)}
+.btn{
+  font-family:var(--head);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  padding:11px 15px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:.2s;
+  white-space:nowrap;
+  min-height:42px;
+}
+.btn:hover{filter:brightness(1.06)}
+.btn.secondary{background:#fff;color:var(--accent);border:1.5px solid var(--border)}
+.btn.danger{background:#fee2e2;color:#dc2626;border:1px solid #fecaca}
+.layout{padding:16px;display:grid;gap:16px}
+.filter-info{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 14px;
+  color:var(--muted2);
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.filter-info strong{color:var(--accent2)}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.stat-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 4px 18px rgba(0,0,0,.055);
+}
+.stat-label{font-family:var(--head);font-size:11px;font-weight:900;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.stat-num{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--text)}
+.stat-sub{color:var(--muted2);font-size:12px;margin-top:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,0,0,.055);
+}
+.card-header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff}
+.card-title{font-family:var(--head);font-size:18px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:var(--accent2)}
+.card-sub{font-size:12px;color:var(--muted2);margin-top:3px}
+.list{padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.row-title{font-size:13px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row-val{font-family:var(--mono);font-size:13px;color:var(--accent);white-space:nowrap;font-weight:700}
+.row-sub{grid-column:1/-1;color:var(--muted2);font-size:11px;line-height:1.35}
+.bar-wrap{grid-column:1/-1;height:8px;background:#eef1ff;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.bar{height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);border-radius:999px;min-width:2px}
+.empty{color:var(--muted);padding:28px;text-align:center;font-family:var(--head);font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:920px}
+th{background:#eef1ff;color:var(--muted);font-family:var(--head);font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;text-align:left;padding:11px 10px;border-bottom:1px solid var(--border)}
+td{padding:10px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text)}
+tr:hover td{background:#f8f9ff}.pill{font-family:var(--head);font-size:11px;font-weight:900;letter-spacing:.7px;padding:5px 9px;border-radius:999px;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px}.pill.green{color:var(--green);border:1px solid #86efac;background:#dcfce7}.pill.red{color:var(--red);border:1px solid #fecaca;background:#fee2e2}.pill.yellow{color:#a16207;border:1px solid #fde68a;background:#fef3c7}.pill.blue{color:var(--accent);border:1px solid #bfdbfe;background:#dbeafe}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:12px 18px;border-radius:10px;box-shadow:0 10px 35px #0004;z-index:1000;font-family:var(--head);font-size:13px;font-weight:900;letter-spacing:.5px;display:none;text-align:center}
+@media(max-width:1200px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar{grid-template-columns:150px 150px minmax(220px,1fr) auto}}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar .search-wrap{grid-column:1/-1}.toolbar .btn{width:100%}}
+@media(max-width:760px){.header{padding:10px 12px}.logo{font-size:19px}.logo small{display:none}.mobile-menu-btn{display:inline-flex}.header-tabs{display:none;width:100%;margin-left:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)}.header-tabs.open{display:grid;grid-template-columns:1fr;gap:8px}.tab-btn,.menu-status{width:100%;justify-content:center;font-size:11px;min-height:42px;padding:9px 8px;border-radius:8px}.menu-extra{display:flex;flex-direction:column;gap:8px}.toolbar{position:relative;top:0;padding:10px;grid-template-columns:1fr}.layout{padding:10px}.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.cards{grid-template-columns:1fr}input,select{width:100%}}
+</style>
+
+<link rel="stylesheet" href="css/menu.css?v=34">
+
+<style>
+/* PATCH MENU UNIFICADO v30 · estas páginas usan el mismo header que index/clientes */
+#authTopbar{display:none!important}
+.header .logo img{display:block!important;width:112px!important;max-width:112px!important;height:auto!important;object-fit:contain!important}
+.header .logo small{display:none!important}
+.header-tabs[data-auth-menu]{margin-left:auto!important}
+@media(max-width:980px){.header .logo img{width:118px!important;max-width:118px!important}}
+</style>
+
+<style>
+/* ESTADÍSTICAS v40 · método preferido corregido */
+.header{
+  background:#172bd8!important;
+  border-bottom:0!important;
+  box-shadow:0 8px 20px rgba(21,59,255,.18)!important;
+  min-height:64px!important;
+  height:64px!important;
+  padding:14px 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:300!important;
+  flex-wrap:nowrap!important;
+  overflow:hidden!important;
+}
+.header .logo{
+  display:flex!important;
+  align-items:center!important;
+  min-width:150px!important;
+  border:0!important;
+  padding:0!important;
+  margin:0!important;
+}
+.header .logo img{
+  display:block!important;
+  width:118px!important;
+  max-width:118px!important;
+  height:auto!important;
+}
+.header .logo small{display:none!important}
+.header-tabs[data-auth-menu]{margin-left:auto!important}
+.header-tabs .tab-btn,
+.header-tabs .storage-pill,
+.tab-btn,
+.menu-status{
+  min-height:32px!important;
+  height:32px!important;
+  padding:0 12px!important;
+  border-radius:999px!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.35px!important;
+  line-height:1!important;
+}
+.toolbar{
+  top:64px!important;
+  grid-template-columns:150px 150px minmax(300px,1fr) auto auto!important;
+  gap:10px!important;
+  padding:12px 16px!important;
+  box-shadow:0 4px 16px rgba(15,23,42,.045)!important;
+}
+.stat-card,.card,.filter-info{
+  border-radius:18px!important;
+  box-shadow:0 8px 24px rgba(15,23,42,.07)!important;
+}
+.stat-num{color:#153bff!important}
+.card-title{color:#153bff!important}
+.row{
+  background:#f8f9ff!important;
+  border:1px solid #d9deea!important;
+  border-radius:14px!important;
+  padding:10px 12px!important;
+}
+.bar-wrap{
+  height:12px!important;
+  background:#e8edff!important;
+  border:1px solid #d4dcff!important;
+}
+.bar{
+  background:linear-gradient(90deg,#153bff,#60a5fa)!important;
+}
+@media(max-width:980px){
+  .header{
+    height:auto!important;
+    min-height:60px!important;
+    flex-wrap:wrap!important;
+    overflow:visible!important;
+  }
+  .toolbar{
+    position:relative!important;
+    top:0!important;
+    grid-template-columns:1fr 1fr!important;
+    padding:10px!important;
+  }
+  .toolbar .search-wrap,
+  .toolbar .btn{
+    grid-column:1 / -1!important;
+    width:100%!important;
+  }
+  .grid{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+  .cards{grid-template-columns:1fr 1fr!important}
+  .layout{padding:10px!important}
+}
+@media(max-width:480px){
+  .cards{grid-template-columns:1fr!important}
+}
+</style>
+
+
+<style>
+/* ESTADÍSTICAS v41 · barras pequeñas limpias */
+.list{
+  gap:9px!important;
+  padding:14px 16px 16px!important;
+}
+
+.stat-mini{
+  display:grid!important;
+  gap:6px!important;
+  background:#f8f9ff!important;
+  border:1px solid #d9deea!important;
+  border-radius:14px!important;
+  padding:9px 12px!important;
+}
+
+.stat-mini-top{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+
+.stat-mini-name{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-weight:900!important;
+  font-size:13px!important;
+  color:#111827!important;
+}
+
+.stat-mini-value{
+  white-space:nowrap!important;
+  font-family:var(--mono)!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  color:#153bff!important;
+}
+
+.stat-mini-meta{
+  font-size:11px!important;
+  color:#64748b!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+.stat-mini-track{
+  height:7px!important;
+  width:100%!important;
+  background:#eef1ff!important;
+  border:1px solid #d4dcff!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+}
+
+.stat-mini-fill{
+  height:100%!important;
+  background:#153bff!important;
+  border-radius:999px!important;
+  min-width:3px!important;
+}
+
+.row,.row-title,.row-val,.row-sub,.bar-wrap,.bar{
+  all:unset;
+}
+
+.card{
+  overflow:hidden!important;
+}
+</style>
+
+</head>
+<body>
+<header class="header">
+  <div class="logo">
+    <img src="Logo tutto1.svg" alt="Tutto Vinilos">
+    <small>COMANDA</small>
+  </div>
+
+  <nav class="header-tabs" data-auth-menu id="authMenu"></nav>
+</header>
+
+<div class="toolbar">
+  <select id="filterYear" onchange="renderEstadisticas()"><option value="all">Todos los años</option></select>
+  <select id="filterMonth" onchange="renderEstadisticas()">
+    <option value="all">Todo el año</option><option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+  </select>
+  <div class="search-wrap" title="Escribe parte del nombre del cliente">
+    🔎 <input id="filterClienteSearch" type="text" list="clientesStatsList" placeholder="Buscar cliente específico..." oninput="renderEstadisticas()" autocomplete="off">
+    <datalist id="clientesStatsList"></datalist>
+  </div>
+  <button class="btn danger" type="button" onclick="limpiarClienteStats()">Limpiar cliente</button>
+  <button class="btn secondary" type="button" onclick="cargarPedidosStats()">⟳ Recargar</button>
+</div>
+
+<div class="layout">
+  <div class="filter-info" id="filterInfo">
+    <span>Viendo estadísticas de <strong>todos los clientes</strong>.</span>
+    <span id="filterCount">0 pedidos filtrados</span>
+  </div>
+
+  <section class="cards">
+    <div class="stat-card"><div class="stat-label">Pedidos</div><div class="stat-num" id="kpiPedidos">0</div><div class="stat-sub">Total filtrado</div></div>
+    <div class="stat-card"><div class="stat-label">Metros</div><div class="stat-num" id="kpiMetros">0</div><div class="stat-sub">Cantidad sumada</div></div>
+    <div class="stat-card"><div class="stat-label">Clientes</div><div class="stat-num" id="kpiClientes">0</div><div class="stat-sub">Clientes únicos</div></div>
+    <div class="stat-card"><div class="stat-label">Listos</div><div class="stat-num" id="kpiListos">0</div><div class="stat-sub">Trabajos terminados</div></div>
+    <div class="stat-card"><div class="stat-label">Pagados</div><div class="stat-num" id="kpiPagados">0</div><div class="stat-sub">Pagos cerrados</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card"><div class="card-header"><div><div class="card-title">Clientes top por metros</div><div class="card-sub">Clientes que más cantidad/metraje han generado.</div></div></div><div class="list" id="topClientes"></div></div>
+    <div class="card"><div class="card-header"><div><div class="card-title">Clientes recurrentes</div><div class="card-sub">Clientes con más pedidos.</div></div></div><div class="list" id="clientesRecurrentes"></div></div>
+    <div class="card"><div class="card-header"><div><div class="card-title">Materiales usados</div><div class="card-sub">Suma de cantidad por material.</div></div></div><div class="list" id="materialesUsados"></div></div>
+    <div class="card"><div class="card-header"><div><div class="card-title">Tipos de impresión</div><div class="card-sub">Suma de cantidad por tipo de impresión.</div></div></div><div class="list" id="impresionesUsadas"></div></div>
+    <div class="card"><div class="card-header"><div><div class="card-title">Operadores</div><div class="card-sub">Pedidos registrados por operador.</div></div></div><div class="list" id="operadoresUsados"></div></div>
+    <div class="card"><div class="card-header"><div><div class="card-title">Producción por mes</div><div class="card-sub">Orden fijo: enero, febrero, marzo, abril...</div></div></div><div class="list" id="metrosPorMes"></div></div>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><div><div class="card-title">Resumen por cliente</div><div class="card-sub">Pedidos, cantidad, listos, pagos y pendientes por cliente.</div></div></div>
+    <div class="table-scroll"><table><thead><tr><th>Cliente</th><th>Pedidos</th><th>Metros</th><th>Primer pedido</th><th>Último pedido</th><th>Listos</th><th>Pagados</th><th>Pendientes</th></tr></thead><tbody id="tablaClientes"><tr><td colspan="8" class="empty">Cargando clientes...</td></tr></tbody></table></div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js?v=1"></script>
+<script src="js/supabase.js?v=29"></script>
+<script src="js/auth.js?v=24"></script>
+<script src="js/menu.js?v=11"></script>
+<script src="js/estadisticas.js?v=41"></script>
+
+</body>
+</html>
