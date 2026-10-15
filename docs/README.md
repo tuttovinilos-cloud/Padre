@@ -27,3 +27,13 @@ Publicar solamente esta carpeta `/docs` como raíz de GitHub Pages.
 - No insertar claves secretas ni datos reales en páginas públicas.
 - Mantener el cache de la PWA restringido a recursos estáticos, sin guardar respuestas privadas.
 - La rama principal de Padre ya fue limpiada de las páginas y scripts antiguos conectados a Comanda.
+
+## Nuevo menú principal y módulos (V2)
+- `index.html`: menú con 13 tarjetas que abren páginas de `modulos/`.
+- `modulos/pedidos.html`: listado demostrativo de pedidos, con seis registros falsos, búsqueda, estados y vista de detalle.
+- `modulos/seguridad.html`, `clientes.html`, `dinero.html` y los otros 10 módulos: páginas iniciales para construir progresivamente.
+- `page.css`, `page.js`: estilos y componentes reutilizables.
+- `arquitectura.html`: ficha técnica original de los 13 pilares y sus conexiones.
+- El service worker V2 añade solamente páginas y recursos **estáticos** al caché para consulta sin conexión, nunca datos reales de clientes ni pedidos.
+
+**No hay conexión con Supabase ni almacenamiento real.** La fase posterior requiere crear una base propia de Padre y reglas de acceso, previa consulta de costos.
