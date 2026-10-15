@@ -29,3 +29,8 @@ No se ha confirmado desde aquí la activación del sitio en GitHub Pages.
 - La autenticación, el envío de notificaciones push y las páginas operativas aún deben implementarse sobre un backend exclusivo para Padre.
 - No publicar secretos, datos personales reales ni contraseñas en GitHub.
 - Cuando exista el entorno independiente: Seguridad → Clientes → Dinero → Pedidos → demás pilares. Cada etapa debe tener pruebas y control de permisos.
+
+## Menú navegable V2
+La pantalla principal de Padre ya funciona como **menú**: las 13 tarjetas llevan a 13 páginas diferentes en `docs/modulos/`. `Pedidos` incorpora un listado con búsqueda, filtro por estados y detalle de ejemplo, usando únicamente seis pedidos ficticios. Las otras 12 páginas contienen una estructura visual y se completarán conforme avancemos. El inventario de pilares y dependencias se conserva en `docs/arquitectura.html`.
+
+**Todos estos módulos son todavía una demostración visual.** No existe conexión de Padre a Supabase, login funcional, registros verdaderos ni transacciones. No introducir datos reales en esta fase.
