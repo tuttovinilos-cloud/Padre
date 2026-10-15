@@ -138,6 +138,7 @@ async function edit(row=null){
  if(!row){line=lineEditor();form.append(U.h("hr",{className:"op-separator"}),line.wrapper)}
  form.append(message);
  const submit=U.h("button",{className:"op-btn",text:row?"Guardar cambios":"Crear pedido",attrs:{type:"submit"}});
+ submit.addEventListener("click",()=>form.requestSubmit());
  dialog.footer.append(U.btn("Cancelar",dialog.close,true),submit);dialog.contents.append(form);
  form.addEventListener("submit",async event=>{
   event.preventDefault();submit.disabled=true;U.notice(message,"");
@@ -220,6 +221,7 @@ function changeLines(row,lines,parent){
  form.append(U.h("p",{className:"op-note",text:"El total se calculará en el servidor. Si el pedido tiene pagos activos, Padre bloqueará esta operación."}));
  form.append(editor.wrapper,note);dialog.contents.append(form);
  const submit=U.h("button",{className:"op-btn",text:"Guardar conceptos",attrs:{type:"submit"}});
+ submit.addEventListener("click",()=>form.requestSubmit());
  dialog.footer.append(U.btn("Cancelar",dialog.close,true),submit);
  form.addEventListener("submit",async e=>{
   e.preventDefault();submit.disabled=true;U.notice(note,"");

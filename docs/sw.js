@@ -1,6 +1,6 @@
 /* Padre PWA V2. Cache exclusivo de archivos públicos estáticos de Padre: nunca datos reales ni respuestas API. */
 "use strict";
-const CACHE="padre-modulos-v4";
+const CACHE="padre-modulos-v5";
 const SCOPE=new URL(self.registration.scope);
 const ASSETS=["./index.html","./arquitectura.html","./manifest.webmanifest","./pwa.css","./pwa.js","./page.css","./page.js","./operaciones.css","./operaciones.js","./modulos/clientes.js","./modulos/pedidos.js","./icons/app-192.png","./icons/app-512.png","./icons/favicon.svg","./icons/apple-touch-icon.png","./modulos/seguridad.html","./modulos/clientes.html","./modulos/dinero.html","./modulos/pedidos.html","./modulos/materiales.html","./modulos/cotizaciones.html","./modulos/produccion.html","./modulos/compras.html","./modulos/precios.html","./modulos/comunicacion.html","./modulos/estadisticas.html","./modulos/configuracion.html","./modulos/marketing.html"].map(x=>new URL(x,SCOPE).href);
 const SAFE=new Set(ASSETS.map(x=>new URL(x).pathname));

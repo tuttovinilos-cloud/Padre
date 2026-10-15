@@ -1,36 +1,33 @@
-# Padre — Nuevo Comanda · Tuttovinilos
+# Padre · Nuevo sistema independiente de Tuttovinilos
 
-**Propósito:** desarrollar el sucesor modular de Comanda con 13 pilares funcionales, manteniendo la identidad visual original, una aplicación web adaptable y una PWA instalable.
+## Propósito
+Construir desde cero la nueva Comanda Padre, con 13 módulos: Seguridad, Clientes, Dinero, Pedidos, Materiales, Cotizaciones, Producción, Compras, Precios, Comunicación, Estadísticas, Configuración, Marketing y Gestión Comercial.
 
-## Repositorios completamente separados
-- `tuttovinilos-cloud/Comanda`: sistema actual de producción. **No modificar.**
-- `tuttovinilos-cloud/Padre`: nuevo desarrollo. Este repositorio ya no contiene en la rama principal las páginas, scripts ni conexiones heredadas de Comanda.
-- El Supabase `comanda-tuttovinilos` es **solo lectura** durante este proyecto. No usarlo para pruebas, migraciones, cambios de estructuras ni altas/bajas de registros.
-- **Todavía NO existe un Supabase nuevo de Padre.** Su creación requiere confirmar organización y posibles costos. Hasta entonces la PWA es informativa y usa datos de arquitectura estáticos.
+## Entornos totalmente separados
+- **Comanda (producción)**: repositorio `tuttovinilos-cloud/Comanda`, Supabase `ujfdsabypflseijatxba`. Nunca modificar desde el proyecto Padre.
+- **Padre (desarrollo)**: este repositorio, Supabase `cuzswxryqvbguntjvhsa`. Único destino de desarrollos y pruebas.
+- Nunca copiar contraseñas, PIN, identificadores privados, clientes, pagos o pedidos reales a un repositorio público.
 
-## Mapa de archivos vigentes
-- `docs/index.html` — interfaz oficial del Mapa Maestro.
-- `docs/manifest.webmanifest`, `docs/sw.js`, `docs/pwa.css`, `docs/pwa.js`, `docs/icons/` — PWA independiente.
-- `docs/README.md` — instrucciones de publicación e instalación.
-- `arquitectura/README.md` — hoja de ruta y pilares.
-- `index.html`, `login.html`, `arquitectura/index.html` — **solo redirecciones estáticas** hacia `docs/`; no tienen acceso a base de datos.
+## Aplicación
+- `docs/index.html`: menú de 13 módulos.
+- `docs/modulos/clientes.html`: directorio, altas, edición, activación/desactivación, contactos, historial y pedidos relacionados.
+- `docs/modulos/pedidos.html`: consulta, filtros, registro, conceptos, cálculo de totales en servidor, edición de estados, asignación de responsables e historial.
+- `docs/modulos/`: otras once pantallas en distintas fases de implementación.
+- `docs/login.html`: pantalla de selección de operadores de Padre.
+- `docs/operaciones.js`, `docs/operaciones.css` y `docs/modulos/{clientes,pedidos}.js`: interfaz específica de los dos módulos.
+- `docs/arquitectura.html`: mapa técnico de los 13 pilares.
 
-## Publicación
-Elegir exclusivamente **main /docs** en GitHub Pages:
-https://github.com/tuttovinilos-cloud/Padre/settings/pages
-
+## Publicación de la PWA
+GitHub Pages debe apuntar a `main /docs`: https://github.com/tuttovinilos-cloud/Padre/settings/pages
 Dirección prevista: https://tuttovinilos-cloud.github.io/Padre/
 
-No se ha confirmado desde aquí la activación del sitio en GitHub Pages.
+## Base de datos
+Las tablas y migraciones se aplican exclusivamente en Supabase Padre, mediante migraciones documentadas. La lógica privilegiada de los pedidos está en el esquema `private`, fuera de la Data API; los RPC públicos usan `SECURITY INVOKER` y comprueban permisos y cuentas activas. La interfaz nunca utiliza el servicio de Comanda.
 
-## Seguridad y avance
-- Ninguna página activa de Padre hace consultas ni escrituras a Supabase.
-- El código heredado fue retirado de la rama principal. Continúa accesible en el historial de GitHub para recuperación; esto **no equivale a borrar todo el historial público**.
-- La autenticación, el envío de notificaciones push y las páginas operativas aún deben implementarse sobre un backend exclusivo para Padre.
-- No publicar secretos, datos personales reales ni contraseñas en GitHub.
-- Cuando exista el entorno independiente: Seguridad → Clientes → Dinero → Pedidos → demás pilares. Cada etapa debe tener pruebas y control de permisos.
+## Limitaciones importantes
+- Los nueve perfiles de operadores están preparados, pero todavía no hay usuarios con credenciales de Supabase Auth vinculadas. Por tanto, **no se ha verificado un inicio de sesión real ni un flujo completo en navegador**.
+- Las operaciones básicas de Clientes y Pedidos han sido probadas mediante una transacción con identidad simulada, seguida de `ROLLBACK`: **no quedó ningún registro de prueba**.
+- Falta activar de forma segura el acceso de un operador, probar en navegador/móvil y comparar todos los campos y comportamientos con Comanda antes de considerar ambos módulos listos para producción.
+- Dinero, conciliación BCV/DIVISA, archivos, notificaciones push reales y demás integraciones requieren fases específicas.
 
-## Menú navegable V2
-La pantalla principal de Padre ya funciona como **menú**: las 13 tarjetas llevan a 13 páginas diferentes en `docs/modulos/`. `Pedidos` incorpora un listado con búsqueda, filtro por estados y detalle de ejemplo, usando únicamente seis pedidos ficticios. Las otras 12 páginas contienen una estructura visual y se completarán conforme avancemos. El inventario de pilares y dependencias se conserva en `docs/arquitectura.html`.
-
-**Todos estos módulos son todavía una demostración visual.** No existe conexión de Padre a Supabase, login funcional, registros verdaderos ni transacciones. No introducir datos reales en esta fase.
+**No usar Padre como sustituto de Comanda hasta completar esas validaciones.**

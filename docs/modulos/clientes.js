@@ -77,6 +77,7 @@ function editClient(row=null){
  }
  form.append(grid,note);
  const save=U.h("button",{text:row?"Guardar cambios":"Registrar cliente",className:"op-btn",attrs:{type:"submit"}});
+ save.addEventListener("click",()=>form.requestSubmit());
  modal.footer.append(U.btn("Cancelar",modal.close,true),save);modal.contents.append(form);
  form.addEventListener("submit",async ev=>{
   ev.preventDefault();save.disabled=true;U.notice(note,"");
@@ -138,6 +139,7 @@ async function detail(row){
   }
   form.append(grid,note);modal.contents.append(form);
   const submit=U.h("button",{className:"op-btn",text:"Guardar contacto",attrs:{type:"submit"}});
+  submit.addEventListener("click",()=>form.requestSubmit());
   modal.footer.append(U.btn("Cancelar",modal.close,true),submit);
   form.addEventListener("submit",async e=>{
    e.preventDefault();submit.disabled=true;

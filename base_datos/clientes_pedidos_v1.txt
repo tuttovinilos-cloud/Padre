@@ -1,0 +1,41 @@
+PADRE · CLIENTES Y PEDIDOS · ETAPA DE DESARROLLO
+Fecha: 15/10/2026
+Repositorio: tuttovinilos-cloud/Padre
+Supabase nuevo: cuzswxryqvbguntjvhsa
+Comanda productivo: SOLO LECTURA, sin cambios.
+
+MIGRACIONES IMPLEMENTADAS SOLO EN PADRE
+1. padre_clientes_pedidos_rpcs_auditoria_v1
+   - Identificación de cliente única cuando existe; nombres y estado.
+   - Historial de clientes con inserción automática por trigger.
+   - RPC crear pedidos con líneas, total servidor, validaciones y auditoría.
+   - RPC actualizar estado, entrega y responsable, respetando permisos.
+   - RPC reemplazar conceptos, recalcular precio y auditar.
+   - Bloqueo de escrituras directas en pedidos/items y anulaciones de pagados.
+2. padre_catalogos_minimos_para_pedidos
+   - Listados mínimos de clientes y responsables según permisos.
+3. padre_pedidos_rpc_private_wrappers_invoker_v1
+   - Movió seis implementaciones privilegiadas al esquema private.
+   - RPC públicas son SECURITY INVOKER; autenticados únicamente.
+
+CÓDIGO DE PÁGINAS
+- docs/modulos/clientes.html y .js
+- docs/modulos/pedidos.html y .js
+- docs/operaciones.css y .js
+- docs/sw.js, caché de archivos estáticos v5
+
+PRUEBA CONTROLADA (SIN PERMANENCIA)
+Se simuló un usuario autenticado dentro de una transacción exclusivamente de desarrollo.
+Se ejecutó alta de cliente, pedido de 2 líneas ($25 + $15 = $40),
+edición de estado y lectura de historial. Terminado con ROLLBACK.
+Verificado: 0 clientes, 0 pedidos, 0 ítems, 0 eventos y 0 usuarios de prueba persistidos.
+Auditoría de Supabase sin advertencias.
+
+NO DECLARAR PRODUCCIÓN COMPLETA AÚN
+Faltan operador Auth real, prueba visual y de sesión en navegador,
+pruebas de permisos negativos por rol y comparación exhaustiva con Comanda.
+Los módulos Dinero, conciliación, adjuntos, cotizador y demás no están
+completados por esta etapa.
+
+GARANTÍA DE AISLAMIENTO
+Ningún SQL se ejecutó de escritura en el Supabase productivo de Comanda.
