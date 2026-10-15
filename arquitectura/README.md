@@ -1,17 +1,11 @@
-# Padre · Mapa Maestro de Comanda
+# Arquitectura de Comanda Padre · Mapa Maestro
 
-## Propósito
-Este repositorio se utilizará para diseñar la evolución modular de Comanda. La página inicial del nuevo trabajo es `arquitectura/index.html`.
+La interfaz oficial está en [`../docs/index.html`](../docs/index.html), con la versión instalable de la aplicación. `arquitectura/index.html` es solo una redirección de compatibilidad.
 
-## Reglas de seguridad del proyecto
-- La base de datos actual de Comanda es producción. No se harán escrituras, migraciones, modificaciones de tablas, políticas ni cambios de datos como parte de este diseño.
-- `arquitectura/index.html` es independiente: no importa los scripts antiguos de Padre ni utiliza credenciales o conexiones de Supabase.
-- Las páginas antiguas de Padre conservan código heredado y algunas usan el proyecto Supabase de Comanda. No utilizarlas para pruebas de escritura.
-- La arquitectura futura separará una capa de interfaz, pilares de dominio, servicios seguros y persistencia.
-- Toda futura función que modifique datos necesitará un entorno Supabase de desarrollo separado, datos de prueba, autorización en el servidor y una validación explícita antes de conectarse a producción.
-- No trasladar contraseñas, identificadores personales, información de clientes ni secretos a archivos públicos de GitHub.
+## Objetivo
+Reorganizar Comanda por responsabilidades compartidas (pilares) y construir un nuevo sistema en Padre sin modificar Comanda ni su Supabase productivo.
 
-## Pilares iniciales
+## Los 13 pilares
 1. Seguridad
 2. Clientes
 3. Dinero
@@ -26,10 +20,22 @@ Este repositorio se utilizará para diseñar la evolución modular de Comanda. L
 12. Configuración
 13. Marketing y Gestión Comercial
 
-## Inventario y avance
-- **V1:** Mapa visual interactivo autónomo, sin conexión a Supabase.
-- **Siguiente:** Precisar dueños de datos, operaciones e interacciones entre pilares.
-- **Después:** Crear módulos funcionales en un entorno separado, sin afectar Comanda.
+## Reglas permanentes
+- Repositorio `Comanda`: no modificar.
+- Supabase `comanda-tuttovinilos`: inspección **solo lectura**.
+- Repositorio `Padre`: puede evolucionar como nuevo sistema independiente.
+- Futuro Supabase Padre: separado a nivel de proyecto y con datos de prueba.
+- Antes de conectar servicios con escritura, verificar autenticación, permisos, políticas, auditoría, reconciliación y aislamiento.
+- No copiar datos ni secretos reales al repositorio público.
 
-## Aclaración
-Los nombres de tablas y páginas del mapa son referencias de inventario tomadas de una revisión de Comanda. No significan que Padre tenga una conexión activa, acceso autorizado ni un backend de desarrollo implementado.
+## Estado
+La rama principal de Padre quedó depurada de páginas y scripts antiguos. Los archivos heredados persisten únicamente en la historia Git para recuperación. La PWA es un prototipo de interfaz; no tiene login real, transacciones, datos en vivo ni notificaciones push habilitadas.
+
+## Fases de desarrollo
+1. Entorno backend independiente y aislamiento.
+2. Pilar Seguridad.
+3. Pilar Clientes.
+4. Pilar Dinero.
+5. Pedidos, Cotizaciones, Materiales, Producción, Compras, Precios.
+6. Comunicación, Estadísticas, Configuración, Marketing y gestión comercial.
+7. Pruebas integrales y propuesta de migración independiente.
