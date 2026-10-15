@@ -1,25 +1,29 @@
-# Padre · PWA (versión inicial)
+# Padre · Nueva PWA independiente
 
-Esta carpeta es la única raíz de publicación permitida para la nueva aplicación Padre mediante GitHub Pages (`main` / `docs`). No publicar la raíz del repositorio: contiene páginas históricas conectadas a la base de datos productiva de Comanda.
+Publicar solamente esta carpeta `/docs` como raíz de GitHub Pages.
 
-## Configuración de publicación
-1. Abrir `https://github.com/tuttovinilos-cloud/Padre/settings/pages`.
-2. Source: **Deploy from a branch**.
-3. Branch: **main**. Folder: **/docs**.
-4. Guardar y esperar que GitHub Pages publique `https://tuttovinilos-cloud.github.io/Padre/`.
+## Configuración
+1. Entrar en https://github.com/tuttovinilos-cloud/Padre/settings/pages
+2. Elegir **Deploy from a branch**.
+3. Elegir **main**, carpeta **/docs**, y guardar.
+4. Esperar el despliegue y abrir https://tuttovinilos-cloud.github.io/Padre/
 
-## Alcance implementado
-- Vista adaptativa escritorio/móvil y navegación inferior para móvil.
-- Manifiesto instalable y PNG de aplicación para Android, iPhone y otros dispositivos compatibles.
-- Service worker que guarda **únicamente los recursos estáticos** del mapa visual y permite consultarlo sin conexión después de abrirlo online.
-- Diálogo de instalación con instrucciones según plataforma.
-- Listener básico para recibir notificaciones push. **No hay backend de envíos ni suscripción push**; las notificaciones reales aún **NO** funcionan.
-- La versión actual es **arquitectura visual**, no el sistema de clientes y pagos listo para producción.
+## Implementado
+- Mapa Maestro interactivo de 13 pilares.
+- Interfaz adaptable a escritorio y móvil con los colores de Comanda.
+- Manifiesto PWA con iconos e instalación en móviles compatibles.
+- Service worker restringido a archivos estáticos del mapa, para consulta sin conexión después de una primera visita conectada.
+- Botón con instrucciones de instalación.
+- Código receptor de push **preparatorio**. Aún no existe servidor de notificaciones, suscripciones ni envíos push.
 
-## Limitaciones y seguridad
-- No se conectó Supabase ni se instalaron credenciales en la PWA.
-- No se ha creado un nuevo proyecto Supabase; es un paso separado que requiere organización y confirmación del posible costo.
-- La app no consulta, muestra ni modifica registros reales de Comanda.
-- La notificación push requiere posteriormente permisos del usuario, un backend propio de Padre y un mecanismo seguro de suscripción autenticada.
-- Si se incorporan datos reales, revisar estrictamente la estrategia del service worker para evitar cachear información privada.
-- Antes de instalar, comprobar que GitHub Pages publica desde `/docs` y no desde `/(root)`.
+## Aún pendiente
+- Crear un Supabase propio para Padre, previo consentimiento de organización y cualquier costo.
+- Diseñar autenticación segura y separación de roles del nuevo backend.
+- Implementar funcionalidades reales de cada pilar en Padre, con datos ficticios y pruebas.
+- Habilitar notificaciones push únicamente cuando exista backend independiente y autorización de los operadores.
+
+## Reglas
+- No consumir ni escribir en el Supabase de Comanda desde Padre.
+- No insertar claves secretas ni datos reales en páginas públicas.
+- Mantener el cache de la PWA restringido a recursos estáticos, sin guardar respuestas privadas.
+- La rama principal de Padre ya fue limpiada de las páginas y scripts antiguos conectados a Comanda.
