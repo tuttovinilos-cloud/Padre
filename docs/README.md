@@ -1,38 +1,36 @@
-# Padre · PWA y módulos
+# Aplicación Padre — documentación técnica
 
-Este directorio `docs/` debe ser la única fuente de GitHub Pages (`main /docs`).
+Esta carpeta `docs/` es la **raíz pública de GitHub Pages**; mantener exactamente los enlaces existentes.
 
-## Menú y seguridad
-- `index.html`: menú inicial con 13 accesos.
-- `login.html`, `login.js`, `auth.js`: inicio de sesión independiente, con selección de operadores.
-- `padre-config.js`: URL y clave **publicable** de Supabase Padre exclusivamente. Nunca usar `service_role`.
-- Los operadores ya tienen fichas de desarrollo, pero todavía no se han vinculado usuarios de Auth ni claves nuevas de acceso.
+## Organización funcional
 
-## Clientes
-- `modulos/clientes.html`, `modulos/clientes.js`
-- Búsqueda, filtro activo/inactivo, paginación, alta, edición y desactivación.
-- Ficha del cliente, contactos, historial de cambios y consulta de pedidos relacionados cuando el operador tenga ambos permisos.
-- Restricciones de RLS, identificación única y auditoría en la base de datos.
+- **Inicio:** `index.html` presenta el menú de trece módulos.
+- **Clientes:** `modulos/clientes.html` y `modulos/clientes.js`. Búsqueda, paginación, creación/edición, contactos, activación, ficha e historial. Los clientes importados conservan su clasificación original de Comanda.
+- **Pedidos:** `modulos/pedidos.html` y `modulos/pedidos.js`. Búsqueda, filtros, listado, ficha e historial, alta de nuevos pedidos mediante funciones seguras en el servidor. Para históricos se muestran **número, moneda, precio y estado originales**, marcados como información no conciliada, sin editar.
+- **Otras secciones:** `modulos/*.html`, en diversas fases de desarrollo.
+- **Componentes comunes:** `operaciones.js`, `operaciones.css`, `page.js`, `page.css`.
+- **Autenticación:** `login.html`, `login.js`, `auth.js`, `padre-config.js`. El acceso tiene que comprobarse en navegador con un operador real; no se presupone éxito.
+- **PWA:** `pwa.js`, `pwa.css`, `sw.js`, `manifest.webmanifest` e `icons/`. El service worker solo cachea archivos públicos; nunca respuestas privadas ni consultas a Supabase.
+- **Arquitectura visual:** `arquitectura.html`.
 
-## Pedidos
-- `modulos/pedidos.html`, `modulos/pedidos.js`
-- Listado por fecha y número, búsqueda por descripción o número, filtro por estado y cliente, paginación y ficha.
-- Alta con selección de cliente y responsable, fecha de entrega y múltiples conceptos (cantidad, precio y unidad).
-- Cálculo del total en el servidor; cambios de estado y edición de conceptos cuando el operador posea los permisos respectivos.
-- Historia auditada, anulación restringida en pedidos con pagos activos.
-- Operaciones de escritura a través de RPC públicas `SECURITY INVOKER` que invocan funciones privadas con validación de Auth y permisos.
+## Aislamiento
 
-## Recursos
-- `operaciones.js` y `operaciones.css`: componentes y estilos reutilizables de Clientes/Pedidos.
-- `sw.js`: cache PWA v5 únicamente para recursos estáticos públicos de Padre, nunca respuestas privadas ni datos del Supabase.
-- `arquitectura.html`: mapa técnico original de pilares.
-- Las otras once páginas continúan en distintas fases de desarrollo.
+Se conecta únicamente al Supabase **Padre**, proyecto `cuzswxryqvbguntjvhsa`. No enlazar al Supabase de Comanda ni añadir sus credenciales o datos al repositorio.
 
-## Validaciones realizadas
-- Sintaxis de JavaScript comprobada.
-- Tablas, políticas y permisos RLS revisados exclusivamente en el Supabase de Padre.
-- Prueba transaccional de alta de cliente, creación de pedido con 2 líneas ($40), cambio de estado y auditoría. La transacción se revirtió totalmente.
-- Auditoría de seguridad Supabase: sin advertencias después de mover las funciones privilegiadas al esquema privado.
-- **Pendiente**: inicio de sesión real con usuario vinculado, pruebas de navegador y móvil, regresión frente a Comanda y validación de operativa completa.
+## Datos
 
-No copiar nunca claves, PIN, cuentas reales ni datos productivos de Comanda.
+La base Padre contiene **454 clientes, 1.386 pedidos y 10 relaciones de contactos** importados desde Comanda. Los conjuntos de identificadores originales coinciden y las fichas originales se guardan como JSONB en la base Padre. **No se copiaron los pagos**; los históricos son de solo lectura hasta conciliar. Cinco pedidos no tienen cliente vinculado en el origen. Véase `../base_datos/README.md`.
+
+## Control de calidad
+
+Desde la raíz del repositorio ejecutar:
+
+```bash
+node tests/verificar-padre.mjs
+```
+
+GitHub Actions ejecuta el mismo verificador en cada cambio a `main` y en pull requests. La verificación estática **no sustituye** la prueba real de autenticación, formularios, políticas RLS, dispositivos o finanzas.
+
+## Publicación
+
+Configurar GitHub Pages en `main /docs`. Después del despliegue, puede hacer falta recargar la PWA para actualizar sus recursos estáticos. No publicar información privada en HTML, JS ni JSON.

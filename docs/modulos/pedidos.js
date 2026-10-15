@@ -29,6 +29,17 @@ const notify=(text,success=false)=>U.notice(notice,text,success?"success":"error
 const statuses={pendiente:"Pendiente",en_proceso:"En proceso",listo:"Listo",entregado:"Entregado",anulado:"Anulado"};
 const badge=code=>U.h("span",{className:"op-chip "+(code==="entregado"?"ok":code==="anulado"?"off":"warning"),text:statuses[code]||code});
 const money=U.fmtMoney;
+const num=row=>row.origen_comanda_id??row.numero;
+const clientLabel=row=>clients.find(c=>c.id===row.cliente_id)?.nombre||row.cliente_nombre_origen||"Cliente no vinculado";
+const statusLabel=row=>row.origen_comanda_id?(row.estado_origen||statuses[row.estado]||row.estado):(statuses[row.estado]||row.estado);
+const priceLabel=row=>{
+ if(!row.origen_comanda_id)return money(row.total_usd);
+ if(row.precio_total_origen==null)return "Sin precio original";
+ const number=Number(row.precio_total_origen);
+ if(!Number.isFinite(number))return "Importe sin verificar";
+ const amount=new Intl.NumberFormat("es-VE",{minimumFractionDigits:2,maximumFractionDigits:2}).format(number);
+ return (row.moneda_origen==="BS"?"Bs. ":row.moneda_origen==="USD"?"US$ ":"")+amount;
+};
 async function loadLookups(){
  const [a,b]=await Promise.all([
   api.rpc("padre_clientes_nombres_pedidos"),
@@ -49,14 +60,14 @@ clientFilter.addEventListener("change",()=>{state.clientId=clientFilter.value;st
 async function reload(){
  const current=++state.request;notify("");count.textContent="Consultando pedidos…";
  let query=api.from("pedidos")
-  .select("id,numero,cliente_id,descripcion,responsable_id,fecha,fecha_entrega,estado,total_usd,moneda_deuda,creado_en",{count:"exact"})
+  .select("id,numero,cliente_id,descripcion,responsable_id,fecha,fecha_entrega,estado,total_usd,moneda_deuda,creado_en,origen_comanda_id,cliente_nombre_origen,estado_origen,estatus_pago_origen,precio_total_origen,moneda_origen,cantidad_origen,material_origen,tipo_impresion_origen,modalidad_origen,operador_nombre_origen,archivo_nombre_origen",{count:"exact"})
   .order("numero",{ascending:false})
   .range(state.page*state.size,state.page*state.size+state.size-1);
  if(state.filter!=="todos")query=query.eq("estado",state.filter);
  if(state.clientId)query=query.eq("cliente_id",state.clientId);
  const text=state.search;
  if(text){
-  if(/^#?\d+$/.test(text))query=query.eq("numero",Number(text.replace("#","")));
+  if(/^#?\d+$/.test(text)){const id=Number(text.replace("#",""));query=query.or("numero.eq."+id+",origen_comanda_id.eq."+id);}
   else query=query.ilike("descripcion","%"+text.replace(/[%_\\]/g,"")+"%");
  }
  const {data,error,count:total}=await query;
@@ -76,15 +87,15 @@ function render(){
  blocks.forEach(([title,val])=>{const b=U.h("div",{className:"op-stat"});b.append(U.h("strong",{text:val}),U.h("span",{text:title+" (página actual)"}));stats.append(b)});
  for(const row of state.rows){
   const tr=U.h("tr");
-  for(const text of ["#"+row.numero,U.shortDate(row.fecha),clientName(row.cliente_id),row.descripcion]){
+  for(const text of ["#"+num(row),U.shortDate(row.fecha),clientLabel(row),row.descripcion]){
    tr.append(U.h("td",{text}));
   }
-  const st=U.h("td");st.append(badge(row.estado));tr.append(st);
-  tr.append(U.h("td",{text:U.shortDate(row.fecha_entrega)}),U.h("td",{text:money(row.total_usd)}));
+  const st=U.h("td");st.append(U.h("span",{text:statusLabel(row),className:"op-chip"}));tr.append(st);
+  tr.append(U.h("td",{text:U.shortDate(row.fecha_entrega)}),U.h("td",{text:priceLabel(row)}));
   const td=U.h("td");td.append(U.btn("Ver ficha",()=>detail(row),true));tr.append(td);tbody.append(tr);
   const card=U.h("article",{className:"op-rowcard"}),top=U.h("div",{className:"row"});
-  top.append(U.h("strong",{text:"#"+row.numero+" · "+clientName(row.cliente_id)}),badge(row.estado));card.append(top);
-  card.append(U.h("h3",{text:row.descripcion}),U.h("p",{text:"Entrega: "+U.shortDate(row.fecha_entrega)+" · "+money(row.total_usd)}));
+  top.append(U.h("strong",{text:"#"+num(row)+" · "+clientLabel(row)}),U.h("span",{text:statusLabel(row),className:"op-chip"}));card.append(top);
+  card.append(U.h("h3",{text:row.descripcion}),U.h("p",{text:"Entrega: "+U.shortDate(row.fecha_entrega)+" · "+priceLabel(row)+(row.origen_comanda_id?" · Histórico":"")}));
   card.append(U.btn("Ver ficha",()=>detail(row),true));cards.append(card);
  }
  if(!state.rows.length){cards.append(U.empty("No hay pedidos para esos filtros."));const tr=U.h("tr"),td=U.h("td",{text:"No hay resultados"});td.colSpan=8;tr.append(td);tbody.append(tr)}
@@ -173,17 +184,25 @@ async function edit(row=null){
  });
 }
 async function detail(row){
- const modal=U.modal("Ficha del pedido #"+row.numero),body=modal.contents;
+ const modal=U.modal("Ficha del pedido #"+num(row)),body=modal.contents;
  const grid=U.h("div",{className:"op-detail-grid"});
  const info=[
-  ["Cliente",clientName(row.cliente_id)],["Descripción",row.descripcion],
+  ["Cliente",clientLabel(row)],["Descripción",row.descripcion],
   ["Fecha",U.shortDate(row.fecha)],["Entrega",U.shortDate(row.fecha_entrega)],
-  ["Estado",statuses[row.estado]||row.estado],["Responsable",operatorName(row.responsable_id)],
-  ["Total",money(row.total_usd)],["Moneda de deuda",row.moneda_deuda||"USD"]
+  ["Estado",statusLabel(row)],["Responsable",row.origen_comanda_id?(row.operador_nombre_origen||"Sin operador de origen"):operatorName(row.responsable_id)],
+  ["Precio registrado",priceLabel(row)],["Moneda original",row.origen_comanda_id?(row.moneda_origen||"No indicada"):(row.moneda_deuda||"USD")]
  ];
  for(const [label,value]of info){const el=U.h("div");el.append(U.h("label",{text:label}),U.h("strong",{text:value}));grid.append(el)}
  body.append(grid);
- if(can("pedidos_escribir")&&row.estado!=="anulado"&&row.estado!=="entregado"){
+ if(row.origen_comanda_id){
+  body.append(U.summary("Histórico importado de Comanda. Estado de pago original: "+(row.estatus_pago_origen||"No indicado")+". Dato informativo: los pagos y saldos todavía no están conciliados en Padre. Este pedido permanece en solo lectura."));
+  const originalDetails=U.h("div",{className:"op-detail-grid"});
+  for(const [label,value] of [["Cantidad original",row.cantidad_origen],["Material",row.material_origen],["Impresión",row.tipo_impresion_origen],["Modalidad",row.modalidad_origen],["Archivo original",row.archivo_nombre_origen]]){
+   if(value!=null&&String(value).trim()){const cell=U.h("div");cell.append(U.h("label",{text:label}),U.h("strong",{text:String(value)}));originalDetails.append(cell);}
+  }
+  body.append(originalDetails);
+ }
+ if(!row.origen_comanda_id&&can("pedidos_escribir")&&row.estado!=="anulado"&&row.estado!=="entregado"){
   modal.footer.append(U.btn("Editar pedido",()=>{modal.close();edit(row)},true));
  }
  body.append(U.h("hr",{className:"op-separator"}),U.h("h3",{className:"op-subheading",text:"Conceptos y cantidades"}));
@@ -198,7 +217,7 @@ async function detail(row){
   itemBox.append(U.h("div",{className:"op-line",text:item.descripcion+" · "+item.cantidad+" "+item.unidad+
     " × "+money(item.precio_unitario_usd)+" = "+money(item.cantidad*item.precio_unitario_usd)}));
  }
- if(can("pedidos_escribir")&&can("pedidos_cantidad_editar")&&lines?.length&&
+ if(!row.origen_comanda_id&&can("pedidos_escribir")&&can("pedidos_cantidad_editar")&&lines?.length&&
    row.estado!=="entregado"&&row.estado!=="anulado"){
   modal.footer.append(U.btn("Modificar conceptos",()=>changeLines(row,lines,modal),true));
  }

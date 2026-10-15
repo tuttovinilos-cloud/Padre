@@ -1,33 +1,59 @@
-# Padre · Nuevo sistema independiente de Tuttovinilos
+# Padre — Nuevo sistema de Tuttovinilos
 
-## Propósito
-Construir desde cero la nueva Comanda Padre, con 13 módulos: Seguridad, Clientes, Dinero, Pedidos, Materiales, Cotizaciones, Producción, Compras, Precios, Comunicación, Estadísticas, Configuración, Marketing y Gestión Comercial.
+Repositorio de **Padre**, el sistema nuevo e independiente de la Comanda actual.
 
-## Entornos totalmente separados
-- **Comanda (producción)**: repositorio `tuttovinilos-cloud/Comanda`, Supabase `ujfdsabypflseijatxba`. Nunca modificar desde el proyecto Padre.
-- **Padre (desarrollo)**: este repositorio, Supabase `cuzswxryqvbguntjvhsa`. Único destino de desarrollos y pruebas.
-- Nunca copiar contraseñas, PIN, identificadores privados, clientes, pagos o pedidos reales a un repositorio público.
+> **Límite obligatorio:** este repositorio y su Supabase de desarrollo pueden modificarse. El repositorio Comanda y su Supabase productivo son de **solo lectura** durante la construcción de Padre.
 
-## Aplicación
-- `docs/index.html`: menú de 13 módulos.
-- `docs/modulos/clientes.html`: directorio, altas, edición, activación/desactivación, contactos, historial y pedidos relacionados.
-- `docs/modulos/pedidos.html`: consulta, filtros, registro, conceptos, cálculo de totales en servidor, edición de estados, asignación de responsables e historial.
-- `docs/modulos/`: otras once pantallas en distintas fases de implementación.
-- `docs/login.html`: pantalla de selección de operadores de Padre.
-- `docs/operaciones.js`, `docs/operaciones.css` y `docs/modulos/{clientes,pedidos}.js`: interfaz específica de los dos módulos.
-- `docs/arquitectura.html`: mapa técnico de los 13 pilares.
+## Estructura de GitHub
 
-## Publicación de la PWA
-GitHub Pages debe apuntar a `main /docs`: https://github.com/tuttovinilos-cloud/Padre/settings/pages
-Dirección prevista: https://tuttovinilos-cloud.github.io/Padre/
+| Ruta | Responsabilidad |
+| --- | --- |
+| `docs/index.html` | Menú principal de los 13 módulos |
+| `docs/modulos/` | Pantallas por módulo; Clientes y Pedidos tienen código independiente `.js` |
+| `docs/operaciones.js` / `.css` | Componentes visuales comunes |
+| `docs/auth.js`, `docs/login.*`, `docs/padre-config.js` | Autenticación de Padre y configuración **pública** del cliente |
+| `docs/pwa.js`, `docs/sw.js`, `docs/manifest.webmanifest`, `docs/icons/` | Aplicación instalable y caché exclusivamente estática |
+| `docs/arquitectura.html`, `arquitectura/` | Mapa técnico y diseño de los pilares |
+| `base_datos/` | Documentación de esquemas, migraciones y traslado histórico |
+| `tests/` | Pruebas automatizadas de archivos y enlaces web |
+| `.github/workflows/` | Comprobación automática de cambios en GitHub |
+| `index.html`, `login.html` | Redirecciones compatibles al contenido de `docs/` |
 
-## Base de datos
-Las tablas y migraciones se aplican exclusivamente en Supabase Padre, mediante migraciones documentadas. La lógica privilegiada de los pedidos está en el esquema `private`, fuera de la Data API; los RPC públicos usan `SECURITY INVOKER` y comprueban permisos y cuentas activas. La interfaz nunca utiliza el servicio de Comanda.
+**No mover las rutas públicas existentes:** se preservan para no romper la página ni su instalación en teléfonos.
 
-## Limitaciones importantes
-- Los nueve perfiles de operadores están preparados, pero todavía no hay usuarios con credenciales de Supabase Auth vinculadas. Por tanto, **no se ha verificado un inicio de sesión real ni un flujo completo en navegador**.
-- Las operaciones básicas de Clientes y Pedidos han sido probadas mediante una transacción con identidad simulada, seguida de `ROLLBACK`: **no quedó ningún registro de prueba**.
-- Falta activar de forma segura el acceso de un operador, probar en navegador/móvil y comparar todos los campos y comportamientos con Comanda antes de considerar ambos módulos listos para producción.
-- Dinero, conciliación BCV/DIVISA, archivos, notificaciones push reales y demás integraciones requieren fases específicas.
+## Estado de datos — copia histórica del 15/10/2026
 
-**No usar Padre como sustituto de Comanda hasta completar esas validaciones.**
+| Información | Comanda original | Copia en Padre | Comprobación |
+| --- | ---: | ---: | --- |
+| Clientes | 454 | 454 | Cantidades e identificadores exactos |
+| Pedidos | 1.386 | 1.386 | Cantidades e identificadores exactos |
+| Relaciones de contactos con clientes | 10 | 10 | Importadas con referencia al origen |
+
+Cada cliente y pedido importado conserva su **registro original íntegro en `datos_origen_comanda` (JSONB)** dentro del Supabase de Padre, nunca dentro de este GitHub público. Todos los pedidos mantienen su ID de Comanda como `origen_comanda_id`. Cinco pedidos no poseen cliente vinculado en Comanda; se preservan sin atribuirles uno. Los pedidos históricos están en **solo lectura**.
+
+**Importante:** los pagos y abonos reales **no** se importaron al libro financiero de Padre. Los estados e importes históricos son informativos: **no representan saldos ni deudas conciliadas**. Esta copia es una fotografía histórica, **no una sincronización en vivo**.
+
+## Entornos
+
+- **Padre (desarrollo):** Supabase propio `cuzswxryqvbguntjvhsa`. Lugar exclusivo para escribir datos de pruebas y desarrollar.
+- **Comanda (producción):** Supabase `ujfdsabypflseijatxba`. Ninguna escritura ni modificación.
+- Código: **este repositorio** `tuttovinilos-cloud/Padre`. No enviar cambios al repositorio Comanda.
+
+## Web y validaciones
+
+GitHub Pages debe publicar **rama `main`, carpeta `/docs`**:
+https://github.com/tuttovinilos-cloud/Padre/settings/pages
+
+Dirección prevista de Padre:
+https://tuttovinilos-cloud.github.io/Padre/
+
+Verificación local: `node tests/verificar-padre.mjs`. GitHub Actions aplica las mismas comprobaciones al actualizar este repositorio.
+
+## Faltantes antes de sustituir Comanda
+
+- Validar el inicio de sesión PIN, políticas de acceso y la operación real desde teléfono y escritorio.
+- Conciliar los pedidos históricos con pagos, saldos, bolívares y divisas sin inventar deuda.
+- Migrar y probar imágenes/archivos alojados en sistemas externos; por ahora solo se conservan sus referencias originales.
+- Completar los demás módulos y pruebas integrales. Los importes históricos no deben convertirse automáticamente a USD.
+
+Más detalles en [Documentación de la web](docs/README.md) y [Datos e importación](base_datos/README.md).

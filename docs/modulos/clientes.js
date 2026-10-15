@@ -32,7 +32,7 @@ function badge(active){return U.h("span",{className:"op-chip "+(active?"ok":"off
 async function load(){
  const req=++state.request;counter.textContent="Consultando clientes…";notify("");
  let qry=api.from("clientes")
- .select("id,nombre,tipo,identificacion,telefono,correo,activo,observaciones,creado_en,actualizado_en",{count:"exact"})
+ .select("id,nombre,tipo,identificacion,telefono,correo,activo,observaciones,creado_en,actualizado_en,origen_comanda_id,importado_desde_comanda,tipo_cliente_origen,rif_cedula_origen,direccion,naturaleza_cliente,telefono_general,correo_general,precio_especial_origen",{count:"exact"})
  .order("nombre",{ascending:true})
  .range(state.page*state.size,state.page*state.size+state.size-1);
  if(state.filter!=="todos")qry=qry.eq("activo",state.filter==="activos");
@@ -53,13 +53,13 @@ function render(){
  back.disabled=state.page===0;next.disabled=end>=state.total;
  for(const row of state.rows){
   const r=U.h("tr"),open=U.btn("Ver ficha",()=>detail(row),true);
-  [row.nombre,row.tipo,row.telefono||"—",row.correo||"—"].forEach(t=>r.append(U.h("td",{text:t})));
+  [row.nombre,row.tipo_cliente_origen||row.tipo,row.telefono||row.telefono_general||"—",row.correo||row.correo_general||"—"].forEach(t=>r.append(U.h("td",{text:t})));
   const st=U.h("td");st.append(badge(row.activo));r.append(st);
   const actions=U.h("td");actions.append(open);if(can("clientes_escribir"))actions.append(U.btn("Editar",()=>editClient(row),true));
   r.append(actions);tbody.append(r);
   const card=U.h("article",{className:"op-rowcard"});
   const top=U.h("div",{className:"row"});top.append(U.h("h3",{text:row.nombre}),badge(row.activo));card.append(top);
-  card.append(U.h("p",{text:"Tipo: "+row.tipo+" · Tel.: "+(row.telefono||"—")}));
+  card.append(U.h("p",{text:"Tipo: "+(row.tipo_cliente_origen||row.tipo)+" · Tel.: "+(row.telefono||row.telefono_general||"—")}));
   const action=U.h("div",{className:"op-actions"});action.append(U.btn("Ver ficha",()=>detail(row),true));if(can("clientes_escribir"))action.append(U.btn("Editar",()=>editClient(row),true));card.append(action);
   cards.append(card);
  }
@@ -106,10 +106,11 @@ async function toggle(row,dialog){
 async function detail(row){
  const dialog=U.modal("Ficha del cliente"),content=dialog.contents;
  const grid=U.h("div",{className:"op-detail-grid"});
- for(const [label,key] of [["Nombre","nombre"],["Identificación","identificacion"],["Tipo","tipo"],["Teléfono","telefono"],["Correo","correo"],["Estado","activo"],["Observaciones","observaciones"],["Actualizado","actualizado_en"]]){
+ for(const [label,key] of [["Nombre","nombre"],["Identificación","rif_cedula_origen"],["Tipo en Comanda","tipo_cliente_origen"],["Tipo en Padre","tipo"],["Teléfono","telefono"],["Correo","correo"],["Teléfono general","telefono_general"],["Correo general","correo_general"],["Dirección","direccion"],["Naturaleza","naturaleza_cliente"],["Estado","activo"],["Observaciones","observaciones"],["Actualizado","actualizado_en"]]){
   const slot=U.h("div");slot.append(U.h("label",{text:label}),U.h("strong",{text:key==="activo"?(row.activo?"Activo":"Inactivo"):(row[key]||"—")}));grid.append(slot);
  }
  content.append(grid);
+ if(row.origen_comanda_id)content.append(U.summary("Cliente importado de Comanda · ID original "+row.origen_comanda_id+". Su registro histórico completo está conservado únicamente en Supabase Padre."));
  if(can("clientes_escribir")){
   dialog.footer.append(U.btn("Editar",()=>{dialog.close();editClient(row)},true));
   dialog.footer.append(U.btn(row.activo?"Desactivar":"Reactivar",()=>toggle(row,dialog),true));

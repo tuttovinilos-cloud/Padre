@@ -1,0 +1,19 @@
+name: Validar Padre
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar solo el repositorio Padre
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar sintaxis, enlaces, PWA y aislamiento
+        run: node tests/verificar-padre.mjs
