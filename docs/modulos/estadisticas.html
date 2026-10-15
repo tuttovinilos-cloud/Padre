@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172bd8">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Comanda Padre">
+<title>Estadísticas · Padre · Tuttovinilos</title>
+<link rel="icon" href="../icons/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../page.css?v=1">
+</head>
+<body data-module="estadisticas">
+<header class="top"><div class="topin"><a class="brand" href="../index.html" aria-label="Menú principal de Padre"><span class="mark">T</span><span>COMANDA · PADRE<small>NUEVO SISTEMA</small></span></a><a href="../index.html" class="go-back">← Volver al menú</a></div></header>
+<main class="container">
+<div class="crumb"><a href="../index.html">Menú principal</a><span>›</span><span id="areaBreadcrumb">Estadísticas</span></div>
+<section class="intro"><div class="intro-top"><span class="eyebrow" id="areaGroup">PADRE</span><span class="tag">DEMO · SIN BASE DE DATOS</span></div><h1 id="areaTitle">Estadísticas</h1><p id="areaDescription">Preparando módulo independiente…</p></section>
+<div id="moduleRoot"></div>
+</main>
+<nav class="bottom" aria-label="Navegación principal móvil">
+<a href="../index.html" data-module="inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></svg><span>Inicio</span></a>
+<a href="./pedidos.html" data-module="pedidos"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span>Pedidos</span></a>
+<a href="./clientes.html" data-module="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 6a3 3 0 0 1 0 6M18 15a5 5 0 0 1 3 5"/></svg><span>Clientes</span></a>
+</nav>
+<div class="modal-wrap" id="detailDialog" hidden role="dialog" aria-modal="true" aria-label="Detalle del pedido ficticio">
+ <div class="modal"><h2>Detalle de demostración</h2><dl id="orderDetails"></dl><button id="closeDetails" type="button">Cerrar</button></div>
+</div>
+<script src="../page.js?v=1" defer></script>
+</body></html>
