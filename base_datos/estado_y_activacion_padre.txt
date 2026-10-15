@@ -1,0 +1,67 @@
+PADRE · INFORME DE DESARROLLO
+Fecha de revisión: 15 de octubre de 2026
+
+AISLAMIENTO CONFIRMADO
+- Repositorio: tuttovinilos-cloud/Padre.
+- Supabase NUEVO de Padre: cuzswxryqvbguntjvhsa (us-east-2).
+- Supabase original Comanda: ujfdsabypflseijatxba. SOLO LECTURA.
+- No se han cambiado tablas, datos, funciones ni políticas del Supabase original.
+- No hay clientes, pedidos ni pagos reales copiados a Padre.
+
+IMPLEMENTADO
+[OK] Menú de 13 módulos, páginas propias y PWA.
+[OK] Primeras 24 tablas del proyecto Padre.
+[OK] 24 tablas con políticas RLS y comprobaciones de privilegios.
+[OK] Tres roles: administrador, operador, consulta.
+[OK] Autenticación Supabase Auth separada: docs/login.html, auth.js y login.js.
+[OK] Lógica de listados protegidos de Clientes, Pedidos, Materiales, Cotizaciones,
+     Producción, Compras, Dinero (consulta), Marketing, Comunicación,
+     Configuración, Seguridad y Estadísticas iniciales.
+[OK] Formularios iniciales de creación (Clientes, Pedidos, Materiales y Marketing).
+[OK] Pagos y aplicaciones SIN escritura directa desde navegador.
+[OK] Importe total de pedidos SIN privilegio de edición directa para authenticated.
+[OK] No hay acceso anónimo a pedidos. Auditoría de seguridad Supabase sin alertas.
+
+PENDIENTE DE ACTIVACIÓN (OBLIGATORIO)
+[ ] Configurar SOLO la clave publicable sb_publishable_... del proyecto Padre
+    en docs/padre-config.js (publishableKey). Está vacía deliberadamente.
+    NUNCA colocar service_role, secret, tokens personales ni claves de Comanda.
+[ ] Crear el primer usuario desde Authentication > Users del Supabase PADRE.
+[ ] Vincularlo con public.operadores y asignarle el rol administrador.
+[ ] Validar inicio de sesión real, autorización y cada acción con ese usuario.
+[ ] Comprobar que GitHub Pages publica desde main /docs.
+[ ] Pruebas automatizadas y manuales en teléfono y escritorio.
+
+NO COMPLETADO TODAVÍA
+- Lógica completa y conciliación monetaria BCV/DIVISA, créditos, pagos y anulaciones.
+- Reproducción total del Cotizador, procesos de producción, compras e inventario,
+  Estadísticas completas y funciones de comunicación.
+- Suscripción y envío real de notificaciones push.
+- Migración de datos reales de Comanda.
+- Pruebas de regresión, seguridad extremo a extremo y puesta en producción.
+
+PROCEDIMIENTO DE PRIMER ADMINISTRADOR
+1. Abrir https://supabase.com/dashboard/project/cuzswxryqvbguntjvhsa/auth/users
+2. Crear o invitar al usuario autorizado, con correo real y contraseña nueva.
+3. Copiar su UUID de usuario (NO su clave).
+4. En el SQL Editor de PADRE, ejecutar (sustituyendo solo UUID y nombre):
+
+BEGIN;
+WITH alta AS (
+ INSERT INTO public.operadores (auth_user_id,nombre,activo)
+ VALUES ('REEMPLAZAR-UUID-DEL-AUTH-USER','Administrador Padre',true)
+ RETURNING id
+)
+INSERT INTO public.operadores_roles (operador_id,rol_id)
+SELECT alta.id,roles.id
+FROM alta CROSS JOIN public.roles roles WHERE roles.codigo='administrador';
+COMMIT;
+
+Este procedimiento es solo para un usuario de confianza. No se debe
+automatizar como autorregistro del navegador.
+
+REGLAS
+- Se prohíbe usar el project ID o claves de Comanda en Padre.
+- No marcar una página como terminada hasta realizar pruebas reales.
+- Mantener Seguridad y Dinero sujetos a pruebas y auditoría antes de producción.
+- No reutilizar contraseñas de los operadores de Comanda.
