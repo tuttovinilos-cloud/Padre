@@ -11,12 +11,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../page.css?v=1">
+<link rel="stylesheet" href="../operaciones.css?v=4">
 </head>
 <body data-module="pedidos">
 <header class="top"><div class="topin"><a class="brand" href="../index.html" aria-label="Menú principal de Padre"><span class="mark">T</span><span>COMANDA · PADRE<small>NUEVO SISTEMA</small></span></a><a href="../index.html" class="go-back">← Volver al menú</a></div></header>
 <main class="container">
 <div class="crumb"><a href="../index.html">Menú principal</a><span>›</span><span id="areaBreadcrumb">Pedidos</span></div>
-<section class="intro"><div class="intro-top"><span class="eyebrow" id="areaGroup">PADRE</span><span class="tag">DEMO · SIN BASE DE DATOS</span></div><h1 id="areaTitle">Pedidos</h1><p id="areaDescription">Preparando módulo independiente…</p></section>
+<section class="intro"><div class="intro-top"><span class="eyebrow" id="areaGroup">PADRE</span><span class="tag">PADRE · ACCESO PROTEGIDO</span></div><h1 id="areaTitle">Pedidos</h1><p id="areaDescription">Listados, conceptos, responsables, estados e historial.</p></section>
 <div id="moduleRoot"></div>
 </main>
 <nav class="bottom" aria-label="Navegación principal móvil">
@@ -27,8 +28,10 @@
 <div class="modal-wrap" id="detailDialog" hidden role="dialog" aria-modal="true" aria-label="Detalle del pedido ficticio">
  <div class="modal"><h2>Detalle de demostración</h2><dl id="orderDetails"></dl><button id="closeDetails" type="button">Cerrar</button></div>
 </div>
+
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0"></script>
 <script defer src="../padre-config.js?v=3"></script>
 <script defer src="../auth.js?v=3"></script>
-<script defer src="../page.js?v=3"></script>
+<script defer src="../operaciones.js?v=4"></script>
+<script defer src="./pedidos.js?v=4"></script>
 </body></html>
