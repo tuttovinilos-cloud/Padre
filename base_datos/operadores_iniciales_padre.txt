@@ -1,0 +1,35 @@
+PADRE · OPERADORES INICIALES
+Revisión: 15 de octubre de 2026
+
+Origen: consulta de SOLO LECTURA a public.operadores del Supabase original Comanda.
+Destino: proyecto NUEVO e INDEPENDIENTE padre-tuttovinilos-dev.
+Migración: padre_operadores_origen_comanda_sin_claves.
+
+RESULTADO COMPROBADO
+- 9 operadores trasladados a Padre como fichas de desarrollo.
+- 8 activos y 1 inactivo, siguiendo el estado del origen.
+- 9 asignaciones de roles, una por operador.
+- Roberto tiene perfil administrador; los demás tienen perfiles propios que
+  toman como referencia las banderas originales con un criterio conservador.
+- Los permisos especiales (responsable, cantidad, ver deudas) se separaron.
+- No se habilita escritura monetaria desde la aplicación.
+- 0 vínculos con Supabase Auth hasta creación individual de credenciales.
+- 0 contraseñas copiadas, 0 correos copiados, 0 PIN copiados.
+- 0 registros de clientes, pedidos ni pagos copiados.
+- Sin acceso anónimo a la tabla de operadores.
+- Auditoría de seguridad de Supabase Padre sin alertas.
+
+MUY IMPORTANTE
+Estas fichas son una PLANTILLA; no son cuentas capaces de iniciar sesión.
+La creación de credenciales individuales deberá producirse exclusivamente
+en el Supabase de Padre y cada cuenta se vinculará a su ficha por auth_user_id.
+No modificar ni reutilizar las contraseñas del Comanda original.
+
+No se ofrece aún inicio de sesión por selección del nombre del operador.
+Esa interfaz deberá diseñarse y verificarse de forma segura: si se muestran
+operadores antes del inicio de sesión, no exponer datos personales o permisos
+por error. La pantalla de acceso actual de Padre requiere trabajo adicional
+para ofrecer nombre de operador + contraseña sin exigir correo al empleado.
+
+La vista de permisos y su equivalencia con Comanda deben probarse antes
+de habilitar un acceso funcional o registrar pedidos y pagos.
