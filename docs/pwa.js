@@ -14,7 +14,7 @@
  const drawConnection=()=>{
   const online=navigator.onLine;
   status.classList.toggle("offline",!online);
-  status.querySelector(".pwa-status-text").textContent=online?"Mapa disponible · conectado":"Sin conexión · modo consulta";
+  status.querySelector(".pwa-status-text").textContent=online?"Padre conectado · demostración":"Sin conexión · modo consulta";
  };
  function openGuide(){
   if(!dialog.hidden)return;
@@ -57,20 +57,8 @@
   deferredPrompt=null;btn.hidden=true;closeGuide();
  });
  if(standalone())btn.hidden=true;
- function navTo(section){
-  const target=section==="home"?document.querySelector(".page-title"):section==="pillars"?document.getElementById("pillarGrid"):document.getElementById("detail");
-  if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
-  nav.querySelectorAll("button").forEach(b=>{
-   const active=b.dataset.section===section;
-   b.classList.toggle("active",active);
-   if(active)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
-  });
- }
+ function navTo(section){if(section==="home"){document.querySelector(".page-title")?.scrollIntoView({behavior:"smooth",block:"start"});return}if(section==="pedidos")location.assign("./modulos/pedidos.html");if(section==="clientes")location.assign("./modulos/clientes.html")}
  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>navTo(b.dataset.section)));
- const detail=document.getElementById("detail");
- detail.addEventListener("click",()=>{nav.querySelectorAll("button").forEach(b=>{
-  b.classList.toggle("active",b.dataset.section==="detail")
- })});
  drawConnection();
  window.addEventListener("online",drawConnection);
  window.addEventListener("offline",drawConnection);

@@ -12,8 +12,8 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
-<link rel="stylesheet" href="./pwa.css?v=1">
-<title>Mapa Maestro · Padre · Tuttovinilos</title>
+<link rel="stylesheet" href="./pwa.css?v=2">
+<title>Comanda Padre · Menú principal · Tuttovinilos</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -115,6 +115,9 @@ h1{font-family:var(--head);font-size:clamp(24px,3vw,35px);line-height:1.2;letter
  .readonly{white-space:normal;text-align:center;max-width:108px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.pillar,.page-chip{text-decoration:none}
+.map-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px;background:#f8f9ff;border:1px solid var(--border);border-radius:14px}.map-link strong{font:900 13px var(--head)}.map-link p{font-size:12px;margin:4px 0 0;color:var(--muted2)}.map-link a{flex-shrink:0;text-decoration:none;background:var(--accent);color:white;border-radius:9px;padding:10px 12px;font:800 11px var(--head)}
+@media(max-width:600px){.map-link{align-items:stretch;flex-direction:column}.map-link a{text-align:center}}
 </style>
 </head>
 <body>
@@ -126,49 +129,35 @@ h1{font-family:var(--head);font-size:clamp(24px,3vw,35px);line-height:1.2;letter
 </header>
 <main>
  <div class="page-title">
-  <span class="overline">Mapa maestro · V2</span>
-  <h1>Arquitectura de Comanda</h1>
-  <p>La nueva estructura organizada por pilares compartidos, no por páginas independientes.</p><span class="pwa-connection" id="pwaConnection" role="status"><span class="dot" aria-hidden="true"></span><span class="pwa-status-text">Mapa disponible · conectado</span></span>
+  <span class="overline">PADRE · Menú principal</span>
+  <h1>Menú principal</h1>
+  <p>Selecciona un módulo para abrir su página. Cada área se construirá de manera independiente.</p><span class="pwa-connection" id="pwaConnection" role="status"><span class="dot" aria-hidden="true"></span><span class="pwa-status-text">Mapa disponible · conectado</span></span>
  </div>
  <div class="workspace">
   <div class="hero"><h2>COMANDA · TUTTOVINILOS</h2><p>Sistema central de gestión</p></div>
   <div class="step" aria-label="Los pilares principales del sistema">
    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg>
-   <span>Pilares fundamentales compartidos</span>
+   <span>Selecciona el módulo que deseas abrir</span>
   </div>
   <div id="pillarGrid" class="pillars" aria-label="Seleccionar pilar"></div>
   <div class="step" aria-label="Los pilares son usados por diferentes páginas">
    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-6-6 6 6 6-6"/></svg>
-   <span>Utilizados por diferentes páginas</span>
+   <span>Accesos rápidos</span>
   </div>
   <div class="pages-panel">
    <div id="pageGrid" class="pages-grid"></div>
-   <p class="hint">Selecciona una página para resaltar los pilares que utiliza.</p>
+   <p class="hint">También puedes acceder directamente a estas secciones.</p>
   </div>
-  <div class="legend"><b>13 pilares ·</b> Cada uno tiene responsabilidades propias y puede servir a varias páginas.</div>
+  <div class="legend"><b>13 módulos ·</b> Acceso a páginas independientes de Padre. Sin datos reales todavía.</div>
   <div class="separator"></div>
-  <section class="detail" id="detail" aria-label="Ficha del pilar seleccionado">
-   <div class="detail-head">
-    <div class="detail-icon" id="detailIcon"></div>
-    <div><span class="eyebrow" id="detailGroup"></span><h3 id="detailTitle"></h3></div>
-   </div>
-   <p class="detail-caption" id="detailSummary"></p>
-   <div class="tabs" role="tablist" aria-label="Detalles del pilar">
-    <button type="button" role="tab" class="tab active" data-tab="functions" aria-selected="true">Funciones</button>
-    <button type="button" role="tab" class="tab" data-tab="tables" aria-selected="false">Tablas</button>
-    <button type="button" role="tab" class="tab" data-tab="pages" aria-selected="false">Páginas</button>
-    <button type="button" role="tab" class="tab" data-tab="relations" aria-selected="false">Relaciones</button>
-   </div>
-   <div class="tab-panel" role="tabpanel" id="tabPanel"></div>
-   <div class="note">Inventario conceptual basado en la revisión de Comanda. Los datos productivos no se modifican desde Padre. Las relaciones se documentarán y verificarán pilar por pilar.</div>
-  </section>
+  <div class="map-link"><div><strong>Mapa técnico de los 13 pilares</strong><p>Funciones, tablas y relaciones del nuevo sistema.</p></div><a href="./arquitectura.html">Ver arquitectura →</a></div>
  </div>
  <div class="footer">Padre · Diseño independiente · Comanda y Supabase permanecen intactos</div>
 </main>
 <nav class="pwa-bottom" id="pwaBottom" aria-label="Navegación móvil de Padre">
  <button type="button" class="active" data-section="home" aria-current="page" aria-label="Ir al inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></svg><span>Inicio</span></button>
- <button type="button" data-section="pillars" aria-label="Ir a los trece pilares"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Pilares</span></button>
- <button type="button" data-section="detail" aria-label="Ver los detalles del pilar"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>Detalles</span></button>
+ <button type="button" data-section="pedidos" aria-label="Abrir la página de pedidos"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Pedidos</span></button>
+ <button type="button" data-section="clientes" aria-label="Abrir la página de clientes"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>Clientes</span></button>
 </nav>
 <div class="pwa-dialog" id="pwaDialog" role="dialog" aria-modal="true" aria-labelledby="pwaDialogTitle" hidden>
  <div class="pwa-dialog-card">
@@ -182,8 +171,9 @@ h1{font-family:var(--head);font-size:clamp(24px,3vw,35px);line-height:1.2;letter
 </div>
 <script>
 "use strict";
-const pillars = [{"id":1,"name":"Seguridad","group":"Base y control","symbol":"◈","summary":"Accesos, identidades, permisos y auditoría de seguridad.","modules":["Sesiones e identidad","Operadores","Roles y permisos","Auditoría"],"sources":["operadores","comanda_login_intentos","Supabase Auth"],"pages":["Login","Configuración","Todas las páginas protegidas"],"links":[2,3,4,5,6,7,8,9,10,11,12,13]},{"id":2,"name":"Clientes","group":"Gestión comercial","symbol":"◎","summary":"Identidad única, datos de contacto e historial comercial.","modules":["Identidad del cliente","Contactos","Historial","Relaciones comerciales"],"sources":["clientes","contactos","clientes_contactos"],"pages":["Clientes","Pedidos","Cotizador","Contabilidad"],"links":[3,4,6,10,11,13]},{"id":3,"name":"Dinero","group":"Finanzas","symbol":"$","summary":"Pagos, deudas, abonos, saldos a favor, monedas y conciliación.","modules":["Movimientos","Cuentas por cobrar","Abonos","Anulaciones y conciliación","Monedas y tasas"],"sources":["clientes_pagos","pedidos_pagos","prod_pedidos_pagos","contabilidad_pagos"],"pages":["Clientes","Pedidos","Compras","Contabilidad","Estadísticas"],"links":[2,4,6,8,9,11]},{"id":4,"name":"Pedidos","group":"Operaciones","symbol":"▤","summary":"Ciclo de vida del pedido, responsables, estados y entregas.","modules":["Registro","Seguimiento","Estados","Entregas","Historial de cambios"],"sources":["pedidos","prod_pedidos","pedidos_auditoria"],"pages":["Pedidos","Clientes","Organizador","Estadísticas"],"links":[2,3,5,6,7,10,11]},{"id":5,"name":"Materiales","group":"Operaciones","symbol":"▦","summary":"Catálogo técnico, materias primas y disponibilidad.","modules":["Catálogo","Características","Consumos","Disponibilidad"],"sources":["materiales","materia_materiales","materia_prima","tipos_impresion"],"pages":["Materiales","Compras","Pedidos","Cotizador"],"links":[4,6,7,8,9]},{"id":6,"name":"Cotizaciones","group":"Gestión comercial","symbol":"▧","summary":"Presupuestos, cálculos comerciales y conversión en trabajos.","modules":["Cotizaciones","Conceptos y cálculos","Estado comercial","Conversión en pedido"],"sources":["cotizaciones"],"pages":["Cotizador","Clientes","Pedidos"],"links":[2,3,4,5,9,13]},{"id":7,"name":"Producción","group":"Operaciones","symbol":"⌁","summary":"Etapas de fabricación, procesos y responsables.","modules":["Procesos","Asignaciones","Impresión","Corpóreos","Seguimiento de trabajos"],"sources":["corp_trabajos","corp_trabajo_pasos","prod_procesos_catalogo"],"pages":["Pedidos","Organizador","Ficha"],"links":[4,5,8,10,11]},{"id":8,"name":"Compras","group":"Operaciones","symbol":"▣","summary":"Proveedores, adquisiciones, notas y movimientos de materiales.","modules":["Proveedores","Notas de compra","Recepción","Movimientos"],"sources":["compras_proveedores","compras_notas","compras_detalle","compras_movimientos"],"pages":["Compras","Contabilidad","Materiales"],"links":[3,5,7,9]},{"id":9,"name":"Precios","group":"Gestión comercial","symbol":"◇","summary":"Tarifas, productos, extras y reglas para calcular importes.","modules":["Tarifarios","Productos y extras","Costos","Reglas de cálculo"],"sources":["listado_productos","listado_extras","materia_precios"],"pages":["Precios","Cotizador","Pedidos"],"links":[3,5,6,8]},{"id":10,"name":"Comunicación","group":"Soporte y análisis","symbol":"✉","summary":"Notificaciones, WhatsApp y comunicaciones del sistema.","modules":["Notificaciones","WhatsApp","Registros de envío","Avisos internos"],"sources":["notificaciones","whatsapp_mensajes","whatsapp_delivery_status"],"pages":["Pedidos","Clientes","Marketing"],"links":[2,4,7,13]},{"id":11,"name":"Estadísticas","group":"Soporte y análisis","symbol":"▥","summary":"Indicadores e informes cruzados, sin duplicar datos operativos.","modules":["Producción","Clientes","Finanzas","Indicadores comerciales"],"sources":["Consultas de pedidos","Consultas de pagos","Consultas de clientes"],"pages":["Estadísticas"],"links":[2,3,4,6,7,8,13]},{"id":12,"name":"Configuración","group":"Base y control","symbol":"⚙","summary":"Parámetros y opciones generales que comparten los módulos.","modules":["Parámetros globales","Preferencias","Parámetros técnicos"],"sources":["configuracion_global","parametros_maquinas"],"pages":["Configuración","Materiales","Pedidos"],"links":[1,5,9]},{"id":13,"name":"Marketing y Gestión Comercial","group":"Gestión comercial","symbol":"◉","summary":"Prospectos, oportunidades, campañas, contenidos y seguimiento comercial.","modules":["Prospectos","Campañas","Agendas","Seguimiento","Fidelización"],"sources":["marketing_ideas","marketing_agendas","marketing_contenidos"],"pages":["Marketing","Clientes","Cotizador","Estadísticas"],"links":[2,3,6,10,11]}];
-const pageNames=["Pedidos","Clientes","Cotizador","Compras","Estadísticas","Contabilidad"];
+const pillars=[{"id":1,"name":"Seguridad","group":"Base y control","symbol":"◈","summary":"Accesos, identidades, permisos y auditoría de seguridad.","modules":["Sesiones e identidad","Operadores","Roles y permisos","Auditoría"],"sources":["operadores","comanda_login_intentos","Supabase Auth"],"pages":["Login","Configuración","Todas las páginas protegidas"],"links":[2,3,4,5,6,7,8,9,10,11,12,13]},{"id":2,"name":"Clientes","group":"Gestión comercial","symbol":"◎","summary":"Identidad única, datos de contacto e historial comercial.","modules":["Identidad del cliente","Contactos","Historial","Relaciones comerciales"],"sources":["clientes","contactos","clientes_contactos"],"pages":["Clientes","Pedidos","Cotizador","Contabilidad"],"links":[3,4,6,10,11,13]},{"id":3,"name":"Dinero","group":"Finanzas","symbol":"$","summary":"Pagos, deudas, abonos, saldos a favor, monedas y conciliación.","modules":["Movimientos","Cuentas por cobrar","Abonos","Anulaciones y conciliación","Monedas y tasas"],"sources":["clientes_pagos","pedidos_pagos","prod_pedidos_pagos","contabilidad_pagos"],"pages":["Clientes","Pedidos","Compras","Contabilidad","Estadísticas"],"links":[2,4,6,8,9,11]},{"id":4,"name":"Pedidos","group":"Operaciones","symbol":"▤","summary":"Ciclo de vida del pedido, responsables, estados y entregas.","modules":["Registro","Seguimiento","Estados","Entregas","Historial de cambios"],"sources":["pedidos","prod_pedidos","pedidos_auditoria"],"pages":["Pedidos","Clientes","Organizador","Estadísticas"],"links":[2,3,5,6,7,10,11]},{"id":5,"name":"Materiales","group":"Operaciones","symbol":"▦","summary":"Catálogo técnico, materias primas y disponibilidad.","modules":["Catálogo","Características","Consumos","Disponibilidad"],"sources":["materiales","materia_materiales","materia_prima","tipos_impresion"],"pages":["Materiales","Compras","Pedidos","Cotizador"],"links":[4,6,7,8,9]},{"id":6,"name":"Cotizaciones","group":"Gestión comercial","symbol":"▧","summary":"Presupuestos, cálculos comerciales y conversión en trabajos.","modules":["Cotizaciones","Conceptos y cálculos","Estado comercial","Conversión en pedido"],"sources":["cotizaciones"],"pages":["Cotizador","Clientes","Pedidos"],"links":[2,3,4,5,9,13]},{"id":7,"name":"Producción","group":"Operaciones","symbol":"⌁","summary":"Etapas de fabricación, procesos y responsables.","modules":["Procesos","Asignaciones","Impresión","Corpóreos","Seguimiento de trabajos"],"sources":["corp_trabajos","corp_trabajo_pasos","prod_procesos_catalogo"],"pages":["Pedidos","Organizador","Ficha"],"links":[4,5,8,10,11]},{"id":8,"name":"Compras","group":"Operaciones","symbol":"▣","summary":"Proveedores, adquisiciones, notas y movimientos de materiales.","modules":["Proveedores","Notas de compra","Recepción","Movimientos"],"sources":["compras_proveedores","compras_notas","compras_detalle","compras_movimientos"],"pages":["Compras","Contabilidad","Materiales"],"links":[3,5,7,9]},{"id":9,"name":"Precios","group":"Gestión comercial","symbol":"◇","summary":"Tarifas, productos, extras y reglas para calcular importes.","modules":["Tarifarios","Productos y extras","Costos","Reglas de cálculo"],"sources":["listado_productos","listado_extras","materia_precios"],"pages":["Precios","Cotizador","Pedidos"],"links":[3,5,6,8]},{"id":10,"name":"Comunicación","group":"Soporte y análisis","symbol":"✉","summary":"Notificaciones, WhatsApp y comunicaciones del sistema.","modules":["Notificaciones","WhatsApp","Registros de envío","Avisos internos"],"sources":["notificaciones","whatsapp_mensajes","whatsapp_delivery_status"],"pages":["Pedidos","Clientes","Marketing"],"links":[2,4,7,13]},{"id":11,"name":"Estadísticas","group":"Soporte y análisis","symbol":"▥","summary":"Indicadores e informes cruzados, sin duplicar datos operativos.","modules":["Producción","Clientes","Finanzas","Indicadores comerciales"],"sources":["Consultas de pedidos","Consultas de pagos","Consultas de clientes"],"pages":["Estadísticas"],"links":[2,3,4,6,7,8,13]},{"id":12,"name":"Configuración","group":"Base y control","symbol":"⚙","summary":"Parámetros y opciones generales que comparten los módulos.","modules":["Parámetros globales","Preferencias","Parámetros técnicos"],"sources":["configuracion_global","parametros_maquinas"],"pages":["Configuración","Materiales","Pedidos"],"links":[1,5,9]},{"id":13,"name":"Marketing y Gestión Comercial","group":"Gestión comercial","symbol":"◉","summary":"Prospectos, oportunidades, campañas, contenidos y seguimiento comercial.","modules":["Prospectos","Campañas","Agendas","Seguimiento","Fidelización"],"sources":["marketing_ideas","marketing_agendas","marketing_contenidos"],"pages":["Marketing","Clientes","Cotizador","Estadísticas"],"links":[2,3,6,10,11]}];
+const moduleSlugs=["seguridad","clientes","dinero","pedidos","materiales","cotizaciones","produccion","compras","precios","comunicacion","estadisticas","configuracion","marketing"];
+const shortcuts=[["Pedidos","pedidos"],["Clientes","clientes"],["Cotizador","cotizaciones"],["Compras","compras"],["Estadísticas","estadisticas"],["Contabilidad","dinero"]];
 const symbols={
  1:'<path d="m12 22 1.8-.8C19.1 18.9 21 15.9 21 11V5l-9-3-9 3v6c0 4.9 1.9 7.9 7.2 10.2L12 22Z"/><path d="m9 12 2 2 4-4"/>',
  2:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
@@ -203,58 +193,12 @@ function makeIcon(id){
  const span=document.createElement("span");span.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(symbols[id]||symbols[5])+'</svg>';
  return span.firstElementChild;
 }
-let selectedPillar=3,selectedPage=null,selectedTab="functions";
-const pillarGrid=document.getElementById("pillarGrid"),pageGrid=document.getElementById("pageGrid");
-function renderPillars(){
- pillarGrid.replaceChildren();
- pillars.forEach(p=>{
-  const b=document.createElement("button");b.type="button";b.className="pillar";b.setAttribute("aria-pressed",String(selectedPillar===p.id));
-  if(selectedPillar===p.id)b.classList.add("selected");
-  if(selectedPage&&!p.pages.some(pg=>pg.toLocaleLowerCase("es").includes(selectedPage.toLocaleLowerCase("es"))))b.classList.add("dimmed");
-  b.append(makeIcon(p.id));
-  const t=document.createElement("span");t.className="pillar-name";t.textContent=p.name;b.append(t);
-  const idx=document.createElement("span");idx.className="pillar-index";idx.textContent=String(p.id).padStart(2,"0");b.append(idx);
-  b.addEventListener("click",()=>{selectedPillar=p.id;selectedTab="functions";selectedPage=null;renderPillars();renderPages();renderDetails();document.getElementById("detail").scrollIntoView({behavior:"smooth",block:"start"})});
-  pillarGrid.append(b);
- });
-}
-function renderPages(){
- pageGrid.replaceChildren();
- pageNames.forEach(n=>{
-  const b=document.createElement("button");b.type="button";b.className="page-chip"+(selectedPage===n?" selected":"");
-  b.setAttribute("aria-pressed",String(selectedPage===n));b.textContent=n;
-  b.addEventListener("click",()=>{selectedPage=selectedPage===n?null:n;renderPages();renderPillars()});
-  pageGrid.append(b);
- });
-}
-function chipText(root,items,linked=false){
- const wrap=document.createElement("div");wrap.className="tags";
- items.forEach(item=>{
-  const p=linked?pillars.find(p=>p.id===item):null;
-  if(linked&&!p)return;
-  const x=document.createElement(linked?"button":"span");x.className="tag"+(linked?" related":"");x.textContent=linked?p.name:item;
-  if(linked){x.type="button";x.addEventListener("click",()=>{selectedPillar=p.id;selectedTab="functions";selectedPage=null;renderPillars();renderPages();renderDetails();document.getElementById("detail").scrollIntoView({behavior:"smooth",block:"start"})})}
-  wrap.append(x);
- });
- root.append(wrap);
-}
-function renderDetails(){
- const p=pillars.find(p=>p.id===selectedPillar);
- const iconRoot=document.getElementById("detailIcon");iconRoot.replaceChildren(makeIcon(p.id));
- document.getElementById("detailGroup").textContent="Pilar "+String(p.id).padStart(2,"0")+" · "+p.group;
- document.getElementById("detailTitle").textContent=p.name;
- document.getElementById("detailSummary").textContent=p.summary;
- document.querySelectorAll(".tab").forEach(b=>{const active=b.dataset.tab===selectedTab;b.classList.toggle("active",active);b.setAttribute("aria-selected",String(active))});
- const panel=document.getElementById("tabPanel");panel.replaceChildren();
- const addTitle=(value)=>{const h=document.createElement("h4");h.className="section-heading";h.textContent=value;panel.append(h)};
- if(selectedTab==="functions"){addTitle("Responsabilidades");chipText(panel,p.modules)}
- else if(selectedTab==="tables"){addTitle("Fuentes identificadas en Supabase");chipText(panel,p.sources)}
- else if(selectedTab==="pages"){addTitle("Páginas que utilizan este pilar");chipText(panel,p.pages)}
- else if(selectedTab==="relations"){addTitle("Otros pilares relacionados");chipText(panel,p.links,true)}
-}
-document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{selectedTab=b.dataset.tab;renderDetails()}));
-renderPillars();renderPages();renderDetails();
+
+const grid=document.getElementById("pillarGrid"),quickGrid=document.getElementById("pageGrid");
+function hrefFor(slug){return moduleSlugs.includes(slug)?"./modulos/"+slug+".html":"./index.html"}
+pillars.forEach((p,i)=>{const a=document.createElement("a");a.className="pillar";a.href=hrefFor(moduleSlugs[i]);a.setAttribute("aria-label","Abrir "+p.name);a.append(makeIcon(p.id));const name=document.createElement("span");name.className="pillar-name";name.textContent=p.name;const no=document.createElement("span");no.className="pillar-index";no.textContent=String(p.id).padStart(2,"0");a.append(name,no);grid.append(a)});
+shortcuts.forEach(([label,slug])=>{const a=document.createElement("a");a.className="page-chip";a.href=hrefFor(slug);a.textContent=label;quickGrid.append(a)});
 </script>
-<script src="./pwa.js?v=1" defer></script>
+<script src="./pwa.js?v=2" defer></script>
 </body>
 </html>

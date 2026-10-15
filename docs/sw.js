@@ -1,92 +1,23 @@
-/* Comanda Padre PWA: ámbito exclusivo de la carpeta publicada desde docs.
-   NO almacena credenciales, datos comerciales, API ni respuestas de Supabase.
-   Cambiar la versión al publicar recursos estáticos nuevos. */
+/* Padre PWA V2. Cache exclusivo de archivos públicos estáticos de Padre: nunca datos reales ni respuestas API. */
 "use strict";
-const CACHE="padre-arquitectura-v1";
-const APP_SCOPE=new URL(self.registration.scope);
-const ASSETS=[
- "./index.html",
- "./manifest.webmanifest",
- "./pwa.css",
- "./pwa.js",
- "./icons/app-192.png",
- "./icons/app-512.png",
- "./icons/favicon.svg",
- "./icons/apple-touch-icon.png"
-].map(x=>new URL(x,APP_SCOPE).href);
-const SAFE_PATHS=new Set(ASSETS.map(x=>new URL(x).pathname));
-self.addEventListener("install",event=>{
- event.waitUntil((async()=>{
-  const cache=await caches.open(CACHE);
-  await cache.addAll(ASSETS);
-  await self.skipWaiting();
- })());
-});
-self.addEventListener("activate",event=>{
- event.waitUntil((async()=>{
-  const names=await caches.keys();
-  await Promise.all(names.filter(x=>x.startsWith("padre-arquitectura-")&&x!==CACHE).map(x=>caches.delete(x)));
-  await self.clients.claim();
- })());
-});
-self.addEventListener("fetch",event=>{
- const req=event.request;
- if(req.method!=="GET"||req.url.startsWith("data:"))return;
- const url=new URL(req.url);
- if(url.origin!==APP_SCOPE.origin||!url.pathname.startsWith(APP_SCOPE.pathname))return;
- const isNavigation=req.mode==="navigate";
- if(isNavigation){
-  // Navegación únicamente en el mapa: nunca guardar otras páginas o endpoints.
-  if(url.pathname!==new URL("./index.html",APP_SCOPE).pathname&&url.pathname!==APP_SCOPE.pathname)return;
-  event.respondWith((async()=>{
-   try{const response=await fetch(req);
-    if(response.ok){const cache=await caches.open(CACHE);await cache.put(new URL("./index.html",APP_SCOPE),response.clone())}
-    return response;
-   }catch{
-    const cache=await caches.open(CACHE);
-    return (await cache.match(new URL("./index.html",APP_SCOPE)))||Response.error();
-   }
-  })());
+const CACHE="padre-modulos-v2";
+const SCOPE=new URL(self.registration.scope);
+const ASSETS=["./index.html","./arquitectura.html","./manifest.webmanifest","./pwa.css","./pwa.js","./page.css","./page.js","./icons/app-192.png","./icons/app-512.png","./icons/favicon.svg","./icons/apple-touch-icon.png","./modulos/seguridad.html","./modulos/clientes.html","./modulos/dinero.html","./modulos/pedidos.html","./modulos/materiales.html","./modulos/cotizaciones.html","./modulos/produccion.html","./modulos/compras.html","./modulos/precios.html","./modulos/comunicacion.html","./modulos/estadisticas.html","./modulos/configuracion.html","./modulos/marketing.html"].map(x=>new URL(x,SCOPE).href);
+const SAFE=new Set(ASSETS.map(x=>new URL(x).pathname));
+const HOME=new URL("./index.html",SCOPE);
+self.addEventListener("install",e=>e.waitUntil((async()=>{const c=await caches.open(CACHE);await c.addAll(ASSETS);await self.skipWaiting()})()));
+self.addEventListener("activate",e=>e.waitUntil((async()=>{const k=await caches.keys();await Promise.all(k.filter(x=>x.startsWith("padre-")&&x!==CACHE).map(x=>caches.delete(x)));await self.clients.claim()})()));
+self.addEventListener("fetch",e=>{
+ const r=e.request;if(r.method!=="GET")return;
+ const u=new URL(r.url);if(u.origin!==SCOPE.origin||!u.pathname.startsWith(SCOPE.pathname))return;
+ const home=u.pathname===SCOPE.pathname;
+ if(!home&&!SAFE.has(u.pathname))return;
+ if(r.mode==="navigate"){
+  if(!home&&!u.pathname.endsWith(".html"))return;
+  e.respondWith((async()=>{const cache=await caches.open(CACHE);const key=home?HOME.href:u.origin+u.pathname;try{const res=await fetch(r);if(res.ok)await cache.put(key,res.clone());return res}catch{return(await cache.match(key))||Response.error()}})());
   return;
  }
- if(!SAFE_PATHS.has(url.pathname))return;
- event.respondWith((async()=>{
-  const cache=await caches.open(CACHE);
-  const cached=await cache.match(req,{ignoreSearch:true});
-  if(cached)return cached;
-  const response=await fetch(req);
-  if(response.ok)await cache.put(req,response.clone());
-  return response;
- })());
+ e.respondWith((async()=>{const cache=await caches.open(CACHE);const found=await cache.match(r,{ignoreSearch:true});if(found)return found;const res=await fetch(r);if(res.ok)await cache.put(r,res.clone());return res})());
 });
-// Preparación de recepción push: no existe suscripción hasta conectar
-// exclusivamente el nuevo backend de Padre y el consentimiento del operador.
-self.addEventListener("push",event=>{
- let payload={};
- try{payload=event.data?.json()||{}}catch{payload={body:event.data?.text()||""}}
- const title=typeof payload.title==="string"?payload.title.slice(0,100):"Comanda Padre";
- const body=typeof payload.body==="string"?payload.body.slice(0,220):"Hay una nueva notificación";
- const candidate=typeof payload.url==="string"?payload.url:"./index.html";
- const dest=new URL(candidate,APP_SCOPE);
- const safe=dest.origin===APP_SCOPE.origin&&dest.pathname.startsWith(APP_SCOPE.pathname)
-  ?dest.href:new URL("./index.html",APP_SCOPE).href;
- event.waitUntil(self.registration.showNotification(title,{
-  body,icon:new URL("./icons/app-192.png",APP_SCOPE).href,
-  badge:new URL("./icons/app-192.png",APP_SCOPE).href,
-  tag:typeof payload.tag==="string"?payload.tag.slice(0,60):"padre-aviso",
-  data:{url:safe}
- }));
-});
-self.addEventListener("notificationclick",event=>{
- event.notification.close();
- const target=event.notification.data?.url||new URL("./index.html",APP_SCOPE).href;
- event.waitUntil((async()=>{
-  const windows=await clients.matchAll({type:"window",includeUncontrolled:true});
-  for(const w of windows){
-   if(w.url.split("?")[0]===target.split("?")[0]){
-    await w.focus();return;
-   }
-  }
-  await clients.openWindow(target);
- })());
-});
+self.addEventListener("push",e=>{let p={};try{p=e.data?.json()||{}}catch{p={body:e.data?.text()||""}};const url=new URL(typeof p.url==="string"?p.url:"./index.html",SCOPE);const safe=url.origin===SCOPE.origin&&url.pathname.startsWith(SCOPE.pathname)?url.href:HOME.href;e.waitUntil(self.registration.showNotification(typeof p.title==="string"?p.title.slice(0,100):"Comanda Padre",{body:typeof p.body==="string"?p.body.slice(0,220):"Nueva notificación",icon:new URL("./icons/app-192.png",SCOPE).href,data:{url:safe}}))});
+self.addEventListener("notificationclick",e=>{e.notification.close();e.waitUntil((async()=>{const target=e.notification.data?.url||HOME.href;const all=await clients.matchAll({type:"window",includeUncontrolled:true});for(const c of all){if(c.url.split("?")[0]===target.split("?")[0]){await c.focus();return}}await clients.openWindow(target)})())});
