@@ -4,5 +4,5 @@
    NO usar claves service_role, secret, JWT de usuario ni el proyecto Comanda. */
 window.PadreConfig=Object.freeze({
  supabaseUrl:"https://cuzswxryqvbguntjvhsa.supabase.co",
- publishableKey:""
+ publishableKey:"sb_publishable_UjrCLADnGjUT3YRcLq-rkw_oTme1gq_"
 });
