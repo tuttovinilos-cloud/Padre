@@ -1,6 +1,6 @@
 # Aplicación Padre — documentación técnica
 
-Esta carpeta `docs/` es la **raíz pública de GitHub Pages**; mantener exactamente los enlaces existentes.
+Esta carpeta `docs/` contiene la aplicación web. GitHub Pages publica **desde la raíz del repositorio (`main /`)**; por eso la ruta real es `/Padre/docs/`. Las redirecciones en `/modulos/` mantienen los enlaces anteriores.
 
 ## Contabilidad: primera etapa operativa
 
@@ -54,4 +54,4 @@ GitHub Actions ejecuta el mismo verificador en cada cambio a `main` y en pull re
 
 ## Publicación
 
-Configurar GitHub Pages en `main /docs`. Después del despliegue, puede hacer falta recargar la PWA para actualizar sus recursos estáticos. No publicar información privada en HTML, JS ni JSON.
+La configuración comprobada de GitHub Pages es `main /` (raíz), no `main /docs`. Después del despliegue, puede hacer falta recargar la PWA para actualizar sus recursos estáticos. No publicar información privada en HTML, JS ni JSON.

@@ -21,6 +21,19 @@ const check=(ok,message)=>{if(!ok)errors.push(message)};
 const modules=["seguridad","clientes","dinero","pedidos","materiales","cotizaciones",
 "produccion","compras","precios","comunicacion","estadisticas","configuracion","marketing"];
 modules.forEach(module=>check(existsSync(join(docs,"modulos",module+".html")),"Falta módulo "+module));
+// Si Pages publica desde la raíz del repo, los enlaces previos deben redirigir a /docs/.
+for(const slug of modules){
+ const oldPath=join(root,"modulos",slug+".html");
+ check(existsSync(oldPath),"Falta redirección pública del módulo "+slug);
+ if(existsSync(oldPath)){
+  const redirect=load(oldPath);
+  check(redirect.includes("../docs/modulos/"+slug+".html"),
+    "Redirección incorrecta para "+slug);
+ }
+}
+check(load(join(root,"login.html")).includes("./docs/login.html"),
+  "El acceso /Padre/login.html no redirige al login real");
+
 for(const path of files){
  const ext=extname(path).toLowerCase();
  const content=[".html",".js",".css",".webmanifest"].includes(ext)?load(path):"";

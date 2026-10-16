@@ -47,7 +47,7 @@ Este módulo aún necesita pruebas en navegador y no reemplaza un sistema contab
 
 ## Web y validaciones
 
-GitHub Pages debe publicar **rama `main`, carpeta `/docs`**:
+GitHub Pages publica actualmente desde **`main /` (raíz del repositorio)**, según el registro del despliegue. La aplicación está en `docs/`; las antiguas rutas directas `/Padre/modulos/*.html` redirigen a `/Padre/docs/modulos/*.html`. Configuración:
 https://github.com/tuttovinilos-cloud/Padre/settings/pages
 
 Dirección prevista de Padre:
