@@ -27,12 +27,12 @@ button{border:0;border-radius:10px;padding:13px 17px;font-weight:800;cursor:poin
 <p id="pinStatus" class="note">Consultando el estado del acceso…</p>
 <form id="changeForm">
 <label for="oldPin">PIN actual o provisional</label>
-<input id="oldPin" name="oldPin" type="password" inputmode="numeric" autocomplete="current-password" minlength="4" maxlength="4" pattern="[0-9]{4}" required>
+<input id="oldPin" name="oldPin" type="password" inputmode="numeric" autocomplete="current-password" minlength="4" maxlength="8" pattern="[0-9]{4,8}" required>
 <label for="newPin">Nuevo PIN personal</label>
-<input id="newPin" name="newPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="4" pattern="[0-9]{4}" required>
+<input id="newPin" name="newPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="8" pattern="[0-9]{4,8}" required>
 <label for="repeatPin">Repetir nuevo PIN</label>
-<input id="repeatPin" name="repeatPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="4" pattern="[0-9]{4}" required>
-<p>Evita claves como 0000, 1234 y secuencias repetidas. Nadie podrá consultar tu nuevo código desde el panel.</p>
+<input id="repeatPin" name="repeatPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="8" pattern="[0-9]{4,8}" required>
+<p>Puedes elegir cualquier combinación de 4 a 8 números, incluso repetidos o consecutivos. Solo debe ser diferente de tu PIN actual. Nadie puede consultar tu clave desde el panel.</p>
 <button type="submit" id="savePin">Guardar mi PIN</button>
 <div class="message" id="message" role="alert" aria-live="polite"></div>
 </form>
@@ -41,5 +41,5 @@ button{border:0;border-radius:10px;padding:13px 17px;font-weight:800;cursor:poin
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0"></script>
 <script defer src="./padre-config.js?v=3"></script>
 <script defer src="./auth.js?v=12"></script>
-<script defer src="./cambiar-pin.js?v=12"></script>
+<script defer src="./cambiar-pin.js?v=14"></script>
 </body></html>

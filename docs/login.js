@@ -43,7 +43,7 @@
    const codigo=select.value;
    if(!/^op_[0-9a-f]{32}$/.test(codigo))throw new Error("Operador no válido");
    const password=document.getElementById("password").value;
-   if(!/^[0-9]{4}$/.test(password)) {fail("Introduce exactamente 4 números.");return}
+   if(!/^[0-9]{4,8}$/.test(password)) {fail("Introduce un PIN de 4 a 8 números.");return}
    // No pedimos correo al empleado. Cada cuenta se vinculará internamente a
    // una identidad de Supabase Auth del entorno exclusivo de Padre.
    const {data,error:loginError}=await auth.api.functions.invoke("padre-pin-login",{

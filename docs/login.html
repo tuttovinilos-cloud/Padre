@@ -17,17 +17,17 @@ button:disabled{opacity:.55;cursor:wait}.note{border-left:3px solid #153bff;back
 #error{font-size:12px;color:#b91c1c;margin-top:13px;min-height:18px}footer{margin-top:15px;color:#64748b;text-align:center;font-size:11px}
 </style></head><body><main><div class="mark">T</div>
 <h1>Comanda Padre</h1>
-<p>Selecciona tu operador e introduce un código numérico de 4 dígitos. No necesitas un correo electrónico.</p>
+<p>Selecciona tu operador e introduce un PIN numérico de 4 a 8 dígitos. No necesitas un correo electrónico.</p>
 <form id="authForm"><label for="operator">Operador</label>
 <select id="operator" name="username" autocomplete="username" required><option value="">Cargando operadores...</option></select>
-<label for="password">Código de 4 dígitos</label>
-<input id="password" type="password" inputmode="numeric" autocomplete="current-password" enterkeyhint="go" minlength="4" maxlength="4" pattern="[0-9]{4}" title="Introduce exactamente 4 dígitos numéricos" required placeholder="Código de 4 dígitos">
+<label for="password">PIN de 4 a 8 dígitos</label>
+<input id="password" type="password" inputmode="numeric" autocomplete="current-password" enterkeyhint="go" minlength="4" maxlength="8" pattern="[0-9]{4,8}" title="Introduce entre 4 y 8 dígitos numéricos" required placeholder="PIN de 4 a 8 dígitos">
 <button id="enter" type="submit">Iniciar sesión</button>
 <div id="error" role="alert" aria-live="polite"></div></form>
-<div class="note">El formulario ya acepta códigos de 4 dígitos. La cuenta de Roberto tiene un código de acceso preparado en Padre. Los demás operadores se activarán individualmente. El acceso está protegido contra intentos repetidos.</div>
+<div class="note">El formulario acepta claves personales de 4 a 8 dígitos; también permite números repetidos y consecutivos. La cuenta de Roberto tiene un código de acceso preparado en Padre. Los demás operadores se activarán individualmente. El acceso está protegido contra intentos repetidos.</div>
 <footer>PADRE · TUTTOVINILOS · DESARROLLO</footer></main>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0"></script>
 <script defer src="./padre-config.js?v=3"></script>
 <script defer src="./auth.js?v=12"></script>
-<script defer src="./login.js?v=12"></script>
+<script defer src="./login.js?v=14"></script>
 </body></html>

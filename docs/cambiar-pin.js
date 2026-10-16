@@ -24,12 +24,12 @@
  form.addEventListener("submit",async event=>{
   event.preventDefault();
   const previous=oldPin.value, next=newPin.value, repeat=repeatPin.value;
-  if(!/^[0-9]{4}$/.test(previous)||!/^[0-9]{4}$/.test(next)){
-    show("Introduce códigos de exactamente 4 números.");return
+  if(!/^[0-9]{4,8}$/.test(previous)||!/^[0-9]{4,8}$/.test(next)){
+    show("Introduce PIN de entre 4 y 8 números.");return
   }
   if(next!==repeat){show("La confirmación no coincide.");return}
-  if(next===previous||next==="0000"||/^(\d)\1{3}$/.test(next)){
-    show("Elige un PIN personal distinto, no repetitivo.");return
+  if(next===previous){
+    show("El PIN nuevo debe ser distinto del actual.");return
   }
   btn.disabled=true;show("");
   try{

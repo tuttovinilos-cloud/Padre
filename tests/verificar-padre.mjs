@@ -83,9 +83,17 @@ check(login.includes('rpc("padre_login_disponibles"'),"Login: falta filtrar oper
 check(login.includes('padre_mi_pin_estado'),"Login: no comprueba primer ingreso");
 check(load(join(docs,"auth.js")).includes('cambiar-pin.html'),"Acceso: falta bloqueo al PIN provisional");
 check(existsSync(join(docs,"cambiar-pin.html")),"PIN: falta formulario obligatorio");
+const loginPage=load(join(docs,"login.html"));
+const pinChangeHtml=load(join(docs,"cambiar-pin.html"));
+check(login.includes("^[0-9]{4,8}$"),"Login: faltan PIN de 4 a 8 dígitos");
+check(loginPage.includes('maxlength="8"')&&loginPage.includes('pattern="[0-9]{4,8}"'),"Login: formulario limita longitud");
+check(pinChangeHtml.includes('maxlength="8"')&&pinChangeHtml.includes('pattern="[0-9]{4,8}"'),"Cambio PIN: campos no aceptan 4-8");
 const pinPage=load(join(docs,"cambiar-pin.js"));
 check(pinPage.includes('padre_cambiar_mi_pin'),"PIN: falta cambio personal protegido");
 check(pinPage.includes('auth.api.auth.signOut()'),"PIN: no exige volver a iniciar sesión");
+check(pinPage.includes("^[0-9]{4,8}$"),"Cambio PIN: falta longitud flexible");
+check(!pinPage.includes('next==="0000"')&&!pinPage.includes("no repetitivo"),"Cambio PIN: se prohíben secuencias");
+check(loginPage.includes("login.js?v=14")&&pinChangeHtml.includes("cambiar-pin.js?v=14"),"Actualización PIN sin versión en HTML");
 const pedidos=load(join(docs,"modulos","pedidos.js"));
 check(pedidos.includes("origen_comanda_id"),"Pedidos: no distingue histórico");
 check(pedidos.includes("precio_total_origen"),"Pedidos: pierde precio original");
