@@ -86,7 +86,7 @@ check(moneyModule.includes("padre_finanzas_registrar"),"Contabilidad: falta el r
 check(moneyModule.includes("padre_finanzas_anular"),"Contabilidad: falta la anulación");
 check(moneyModule.includes("padre_finanzas_pedidos_abiertos"),"Contabilidad: falta la consulta de saldos");
 const moneyPage=load(join(docs,"modulos","dinero.html"));
-check(moneyPage.includes("dinero.js?v=8"),"Contabilidad: página sin script operativo");
+check(moneyPage.includes("dinero.js?v=9"),"Contabilidad: página sin script operativo");
 const conciliation=load(join(docs,"modulos","conciliacion.js"));
 check(conciliation.includes("padre_conciliacion_listar"),"Conciliación: falta consulta paginada");
 check(conciliation.includes("padre_conciliacion_guardar_revision"),"Conciliación: falta auditoría documental");
