@@ -87,6 +87,16 @@ check(moneyModule.includes("padre_finanzas_anular"),"Contabilidad: falta la anul
 check(moneyModule.includes("padre_finanzas_pedidos_abiertos"),"Contabilidad: falta la consulta de saldos");
 const moneyPage=load(join(docs,"modulos","dinero.html"));
 check(moneyPage.includes("dinero.js?v=8"),"Contabilidad: página sin script operativo");
+const conciliation=load(join(docs,"modulos","conciliacion.js"));
+check(conciliation.includes("padre_conciliacion_listar"),"Conciliación: falta consulta paginada");
+check(conciliation.includes("padre_conciliacion_guardar_revision"),"Conciliación: falta auditoría documental");
+check(conciliation.includes("padre_conciliacion_evidencias"),"Conciliación: falta revisión de referencias");
+check(conciliation.includes("no se copian al libro")||conciliation.includes("no se recalculan deudas"),"Conciliación: advertencia de saldos faltante");
+const reconciliationPage=load(join(docs,"modulos","conciliacion.html"));
+check(reconciliationPage.includes("conciliacion.js?v=9"),"Conciliación: página sin nuevo módulo");
+check(existsSync(join(root,"modulos","conciliacion.html")),"Conciliación: falta redirección desde /modulos/");
+const accounting=load(join(docs,"modulos","dinero.js"));
+check(accounting.includes('./conciliacion.html'),"Contabilidad: enlace a conciliación faltante");
 const clientes=load(join(docs,"modulos","clientes.js"));
 check(clientes.includes("tipo_cliente_origen"),"Clientes: no visualiza clasificación original");
 check(!files.some(f=>relative(docs,f).startsWith("js/supabase")),"Código Supabase heredado detectado");

@@ -53,6 +53,7 @@
   link("Clientes","./clientes.html");
   link("Pedidos","./pedidos.html");
   link("Compras","./compras.html");
+  link("Conciliación histórica","./conciliacion.html");
  }
  const makeTable=(headings)=>{
   const table=U.h("table",{className:"op-table"}),th=U.h("thead"),tr=U.h("tr"),tbody=U.h("tbody");
