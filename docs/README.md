@@ -2,6 +2,16 @@
 
 Esta carpeta `docs/` es la **raíz pública de GitHub Pages**; mantener exactamente los enlaces existentes.
 
+## Seguridad y jerarquías (primer módulo operativo)
+
+- `modulos/seguridad.html`, `modulos/seguridad.js`, `seguridad.css`: consulta de operadores, búsqueda, roles, matriz de 31 permisos por áreas, estado activo/inactivo y historial de decisiones.
+- Solo un **administrador activo** puede guardar perfiles. El servidor verifica el rol de administrador mediante `private.padre_es_administrador()`; no basta con ocultar botones.
+- El procedimiento transaccional `public.padre_seguridad_guardar_perfil` delega en `private.padre_guardar_perfil_operador`. Los permisos individuales de cada empleado se mantienen separados en un rol `perfil_<uuid>`, evitando modificar a otros usuarios.
+- No está permitido modificar desde este panel al propio administrador ni a otros administradores. `seguridad_gestionar` está reservado para administradores.
+- Revocadas las modificaciones directas en `operadores`, `operadores_roles`, `roles`, `roles_permisos` y `permisos` a los clientes autenticados. Las acciones del panel quedan registradas en `seguridad_eventos`.
+- **Importante:** este panel **no asigna PIN ni activa cuentas de Supabase Auth**. Los operadores que no tienen acceso vinculado aparecen como tales. Conceder `dinero_anular` no crea por sí solo un flujo de anulación: Contabilidad deberá exigirlo al implementar esa función.
+- Validar manualmente con Roberto en el navegador y ejecutar pruebas de roles antes de considerar terminada toda el área de Seguridad.
+
 ## Organización funcional
 
 - **Inicio:** `index.html` presenta el menú de trece módulos.

@@ -1,0 +1,26 @@
+/* Padre: jerarquías y permisos */
+.sg-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.sg-stat{background:#f8faff;border:1px solid #e0e7ff;border-radius:13px;padding:13px}
+.sg-stat strong{font:900 23px Montserrat,Arial,sans-serif;display:block;color:#172bd8}
+.sg-stat span{display:block;font-size:11px;line-height:1.45;color:#586780;margin-top:4px}
+.sg-operators{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sg-person{padding:17px;border:1px solid #e1e6f1;background:#fff;border-radius:14px;display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
+.sg-person-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;width:100%}
+.sg-person-name{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sg-person-name strong{overflow-wrap:anywhere;color:#17243a;font-size:14px}
+.sg-person-name small{line-height:1.45;color:#68738b;font-size:11px}
+.sg-person .op-muted{margin:0;line-height:1.6}
+.sg-protected{font-size:11px;color:#6b7280;font-weight:700;margin:4px 0 0}
+.sg-permissions{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.sg-group{border:1px solid #e2e8f0;border-radius:13px;padding:13px;background:#fbfcff}
+.sg-group-title{font-size:13px;font-weight:900;margin:0 0 9px;color:#1e293b}
+.sg-permission{display:flex;gap:10px;align-items:center;padding:10px 0;cursor:pointer;border-top:1px solid #e9edf5}
+.sg-permission input{appearance:auto;accent-color:#153bff;width:17px;height:17px;flex:0 0 17px;cursor:pointer;margin:0}
+.sg-permission input:disabled{cursor:not-allowed}
+.sg-permission-copy{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+.sg-permission-copy strong{font-weight:700;font-size:12px}
+.sg-permission-copy small{font-size:10px;color:#64748b;overflow-wrap:anywhere}
+.sg-highrisk{font-size:10px;font-weight:800;color:#9a3412;background:#fff0e3;border-radius:12px;padding:4px 7px;white-space:nowrap}
+.sg-audit{margin:24px 0 4px;border-top:1px solid #e2e8f0;padding-top:14px}
+.sg-audit li{margin-bottom:8px}
+@media(max-width:850px){.sg-summary{grid-template-columns:repeat(2,1fr)}.sg-operators{grid-template-columns:1fr}}
