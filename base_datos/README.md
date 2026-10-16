@@ -26,7 +26,10 @@ Migraciones `migraciones/padre_conciliacion_preparacion_v1.sql` y `migraciones/p
 - Revisión por pedido con estados documentales, observaciones e historial auditado.
 - Los cambios de revisión solo los guarda un administrador activo.
 - Las funciones públicas verifican permisos; las implementaciones están en esquema privado.
-- La tabla `private.conciliacion_fuentes` está preparada para almacenar información de origen, pero permanece sin filas.
+- La tabla `private.conciliacion_fuentes` contiene **50 referencias históricas**, todas provenientes de `pedidos_pagos`; se identificaron **8 anuladas** y **38 pedidos vinculados**, sin referencias a pedidos inexistentes. No constituyen ingresos ni saldos.
+- Se verificaron, solo por lectura en Comanda, los conteos de cuatro fuentes: `pedidos_pagos` 360 (12 anulados), `clientes_pagos` 179 (8 anulados), `prod_pedidos_pagos` 4, `contabilidad_pagos` 2: **545 registros documentales en total**. Son referencias, no necesariamente movimientos únicos; existe superposición entre fuentes.
+- En Padre se registraron estos conteos agregados en `private.conciliacion_fuentes_control` y se amplió `padre_conciliacion_fuentes_resumen` para mostrar la copia incompleta: **495 referencias pendientes de cargar**. No se copió ningún pago original a `public.pagos` ni se concilió ninguna deuda.
+- Para completar la importación documental se requiere una vía autorizada: el traslado directo quedó detenido por controles de seguridad. No intentar sortearlos; cualquier exportación/importación posterior debe proteger la información financiera.
 - La conciliación monetaria final NO está implementada; todos los pedidos históricos continúan con `importe_conciliado=false`.
 - No se copiaron pagos originales al libro financiero `public.pagos`.
 

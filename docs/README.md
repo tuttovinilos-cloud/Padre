@@ -6,7 +6,7 @@ Esta carpeta `docs/` contiene la aplicación web. GitHub Pages publica **desde l
 
 El submódulo `modulos/conciliacion.html` lista los pedidos importados con búsqueda, filtros, paginación y anotaciones de revisión.
 
-Se añadieron funciones autorizadas para consultar y auditar las revisiones. La revisión documental no cambia estados financieros, montos ni deudas. La tabla protegida de fuentes documentales está preparada pero aún no contiene comprobantes del sistema original.
+Se añadieron funciones autorizadas para consultar y auditar las revisiones. La revisión documental no cambia estados financieros, montos ni deudas. La tabla privada de fuentes documentales contiene **50 comprobantes de 545 referencias históricas identificadas**; faltan **495**. Entre las 50 referencias hay **8 anuladas** y se relacionan con **38 pedidos**. El nuevo control de completitud separa las cuatro fuentes y los anulados. Es una copia documental parcial, NO un libro de cobros, NO se han recalculado saldos.
 
 Esta etapa no sustituye una conciliación monetaria ni implica que los pedidos estén pagados.
 
@@ -57,7 +57,7 @@ Se conecta únicamente al Supabase **Padre**, proyecto `cuzswxryqvbguntjvhsa`. N
 
 ## Datos
 
-La base Padre contiene **454 clientes, 1.386 pedidos y 10 relaciones de contactos** importados desde Comanda. Los conjuntos de identificadores originales coinciden y las fichas originales se guardan como JSONB en la base Padre. **No se copiaron los pagos**; los históricos son de solo lectura hasta conciliar. Cinco pedidos no tienen cliente vinculado en el origen. Véase `../base_datos/README.md`.
+La base Padre contiene **454 clientes, 1.386 pedidos y 10 relaciones de contactos** importados desde Comanda. Los conjuntos de identificadores originales coinciden y las fichas originales se guardan como JSONB en la base Padre. **Se guardaron 50 referencias de pagos en tabla privada, pero ningún pago histórico se incorporó al libro financiero `public.pagos`**; los históricos son de solo lectura hasta conciliar. Cinco pedidos no tienen cliente vinculado en el origen. Véase `../base_datos/README.md`.
 
 ## Control de calidad
 

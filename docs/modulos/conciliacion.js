@@ -58,11 +58,46 @@
    b.append(U.h("strong",{text:fmtNum(val)}),U.h("span",{text:label}));
    summary.append(b);
   }
-  const f=state.fuentes;
-  const count=Number(f?.total_fuentes)||0;
-  sources.textContent=count
-   ?"Fuentes documentales guardadas: "+fmtNum(count)+" registros, incluyendo "+fmtNum(f.pedidos_pagos_anulados)+" pagos de pedidos marcados como anulados. Esto NO representa dinero ingresado en Padre."
-   :"Fuentes documentales de pagos: aún no cargadas en Padre. Los estados de pago originales son solo referencias; es necesario contrastarlos con sus comprobantes antes de conciliar.";
+  const f=state.fuentes||{};
+  const count=Number(f.total_fuentes)||0;
+  const referenceCount=Number(f.total_origen_referencias)||0;
+  const missing=Number(f.pendientes_copia)||0;
+  const complete=f.copia_completa===true;
+  sources.replaceChildren();
+  sources.append(U.h("strong",{text:complete
+   ?"Copia documental completada por cantidad · falta conciliar"
+   :"Copia documental INCOMPLETA · prohibido calcular saldos"}));
+  if(referenceCount){
+   sources.append(U.h("p",{text:fmtNum(count)+" de "+fmtNum(referenceCount)+
+    " registros de referencia copiados · pendientes: "+fmtNum(missing)+
+    ". No son "+fmtNum(referenceCount)+" transacciones únicas: algunas fuentes documentan el mismo cobro."}));
+  }else{
+   sources.append(U.h("p",{text:"Todavía no se pudo comprobar la cantidad de los registros originales."}));
+  }
+  const sourceNames={
+   pedidos_pagos:"Pagos asociados a pedidos",
+   clientes_pagos:"Pagos registrados por cliente",
+   prod_pedidos_pagos:"Pagos de producción",
+   contabilidad_pagos:"Pagos de contabilidad"
+  };
+  if(Array.isArray(f.detalle_fuentes)){
+   const perSource=U.h("ul",{className:"op-timeline"});
+   for(const item of f.detalle_fuentes){
+    const label=sourceNames[item.fuente]||item.fuente;
+    perSource.append(U.h("li",{text:label+": "+fmtNum(item.copiados)+
+     " / "+fmtNum(item.total_origen)+" registros; "+
+     fmtNum(item.anulados_copiados)+" / "+fmtNum(item.anulados_origen)+" anulados documentados."}));
+   }
+   sources.append(perSource);
+  }
+  sources.append(U.h("p",{text:"Pedidos distintos con referencias copiadas: "+
+   fmtNum(f.pedidos_distintos_referenciados)+
+   ". Referencias a pedidos inexistentes en Padre: "+
+   fmtNum(f.pedidos_referenciados_no_encontrados)+
+   ". Registros sin fecha original: "+fmtNum(f.referencias_sin_fecha)+"."}));
+  sources.append(U.h("p",{text:"La copia es puntual, no se sincroniza automáticamente con Comanda. "+
+   "Las referencias pueden estar duplicadas o anuladas. Ni una copia completa por cantidad "+
+   "ni un estado original «Pagado» validan una deuda o un ingreso. Los saldos históricos siguen sin conciliar."}));
  }
  function render(){
   tableArea.replaceChildren();cards.replaceChildren();
@@ -122,7 +157,7 @@
   for(const [key,value] of details){
    const b=U.h("div");b.append(U.h("label",{text:key}),U.h("strong",{text:value}));facts.append(b);
   }
-  content.append(facts,U.summary("Información histórica. Se excluyen los abonos anulados y vinculados hasta revisar la documentación. Esta ficha no cambia dinero, deudas, ni importa pagos automáticamente."));
+  content.append(facts,U.summary("Información histórica: los comprobantes se muestran como referencias, incluidos los que puedan estar anulados. La copia es parcial y no se suman abonos ni se cambian deudas o pagos."));
   const evidence=U.h("section"),history=U.h("section");
   content.append(U.h("hr",{className:"op-separator"}),evidence,U.h("hr",{className:"op-separator"}),history);
   evidence.append(U.h("h3",{className:"op-subheading",text:"Comprobantes asociados · referencia"}));
@@ -132,7 +167,7 @@
    api.from("conciliacion_eventos").select("estado_anterior,estado_nuevo,observaciones,creado_en").eq("pedido_id",item.pedido_id).order("creado_en",{ascending:false}).limit(25)
   ]);
   if(sources.error)evidence.append(U.h("p",{className:"op-muted",text:"No se pudieron consultar las referencias."}));
-  else if(!sources.data?.length)evidence.append(U.h("p",{className:"op-muted",text:"No hay comprobantes de pagos cargados todavía para este pedido. No presupone que no existan en Comanda."}));
+  else if(!sources.data?.length)evidence.append(U.h("p",{className:"op-muted",text:"Este pedido no tiene comprobantes en la copia documental PARCIAL de Padre. Eso NO demuestra que no tenga pagos en Comanda."}));
   else for(const p of sources.data){
    const line=U.h("article",{className:"op-contact"});
    const received=historicMoney(p.monto_recibido,p.moneda);
