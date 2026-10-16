@@ -2,6 +2,14 @@
 
 Esta carpeta `docs/` contiene la aplicación web. GitHub Pages publica **desde la raíz del repositorio (`main /`)**; por eso la ruta real es `/Padre/docs/`. Las redirecciones en `/modulos/` mantienen los enlaces anteriores.
 
+## Revisión documental de históricos
+
+El submódulo `modulos/conciliacion.html` lista los pedidos importados con búsqueda, filtros, paginación y anotaciones de revisión.
+
+Se añadieron funciones autorizadas para consultar y auditar las revisiones. La revisión documental no cambia estados financieros, montos ni deudas. La tabla protegida de fuentes documentales está preparada pero aún no contiene comprobantes del sistema original.
+
+Esta etapa no sustituye una conciliación monetaria ni implica que los pedidos estén pagados.
+
 ## Contabilidad: primera etapa operativa
 
 El módulo `modulos/dinero.html` carga `modulos/dinero.js` y `finanzas.css`.

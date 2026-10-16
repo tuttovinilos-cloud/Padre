@@ -39,6 +39,10 @@ Cada cliente y pedido importado conserva su **registro original íntegro en `dat
 - **Comanda (producción):** Supabase `ujfdsabypflseijatxba`. Ninguna escritura ni modificación.
 - Código: **este repositorio** `tuttovinilos-cloud/Padre`. No enviar cambios al repositorio Comanda.
 
+## Conciliación histórica (revisión documental)
+
+Ya existe una pantalla de revisión separada de Contabilidad, accesible desde `docs/modulos/conciliacion.html`. Ofrece consulta por pedido y clasificación documental con autorización de administrador y auditoría. Esta revisión nunca crea abonos ni cambia saldos de los pedidos importados. **Falta incorporar los comprobantes históricos y conciliarlos**.
+
 ## Contabilidad — primera etapa
 
 Padre dispone de un circuito inicial para **abonos y anulaciones de pedidos nuevos**, con permisos diferenciados, tasas BCV/DIVISA indicadas expresamente y auditoría. Se conserva la separación entre compras y cobros. Los **1.386 pedidos históricos** están excluidos de los cálculos de deuda mientras no se concilien sus pagos reales.

@@ -19,6 +19,17 @@ Las migraciones se registraron en el **historial de migraciones de Supabase Padr
 - El estado de pago original indica **1.338 Pagado**, **44 Pendiente** y **4 Abonado**. **Es información histórica, no un saldo válido de Padre.**
 - Se detectaron dos identificaciones fiscales repetidas en Clientes; no se fusionaron clientes diferentes.
 
+## Preparación de conciliación histórica
+
+Migraciones `migraciones/padre_conciliacion_preparacion_v1.sql` y `migraciones/padre_conciliacion_fuentes_documentales_v1.sql`, aplicadas únicamente en Padre.
+
+- Revisión por pedido con estados documentales, observaciones e historial auditado.
+- Los cambios de revisión solo los guarda un administrador activo.
+- Las funciones públicas verifican permisos; las implementaciones están en esquema privado.
+- La tabla `private.conciliacion_fuentes` está preparada para almacenar información de origen, pero permanece sin filas.
+- La conciliación monetaria final NO está implementada; todos los pedidos históricos continúan con `importe_conciliado=false`.
+- No se copiaron pagos originales al libro financiero `public.pagos`.
+
 ## Contabilidad de Padre: funciones de la primera fase
 
 Migraciones aplicadas en Padre y versionadas en `migraciones/padre_contabilidad_v1.sql` y `migraciones/padre_finanzas_reintentos_v1.sql`.
