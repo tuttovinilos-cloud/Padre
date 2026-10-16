@@ -44,6 +44,11 @@ async function permissions(operator){
 async function authorize(){
  const op=await currentOperator();
  if(!op){location.replace(signinUrl());return null}
+ const {data:status,error:pinError}=await api.rpc("padre_mi_pin_estado");
+ if(pinError||!status?.length)throw new Error("No fue posible verificar el estado del PIN.");
+ if(status[0].requiere_cambio){
+  location.replace(base()+"cambiar-pin.html");return null;
+ }
  const granted=await permissions(op);
  return {op,api,granted,can:k=>granted.has(k)};
 }

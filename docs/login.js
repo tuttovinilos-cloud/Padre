@@ -14,20 +14,22 @@
  }
  try{
   const current=await auth.currentOperator();
-  if(current){location.replace("./index.html");return}
+  if(current){
+   const {data:pinState,error:pinError}=await auth.api.rpc("padre_mi_pin_estado");
+   if(pinError||!pinState?.length)throw pinError||new Error("Estado de PIN no disponible");
+   location.replace(pinState[0].requiere_cambio?"./cambiar-pin.html":"./index.html");return;
+  }
  }catch(e){console.warn("Padre: verificación de sesión pendiente");}
  try{
   // Listado público mínimo: solo alias y código, jamás claves o privilegios.
-  const {data, error:fetchError}=await auth.api.from("login_operadores")
-   .select("codigo,nombre_visible")
-   .order("nombre_visible",{ascending:true});
+  const {data, error:fetchError}=await auth.api.rpc("padre_login_disponibles");
   if(fetchError)throw fetchError;
   select.replaceChildren(new Option("Selecciona tu operador",""));
   for(const row of data||[]){
    if(typeof row.codigo!=="string"||typeof row.nombre_visible!=="string")continue;
    select.append(new Option(row.nombre_visible,row.codigo));
   }
-  if(!data?.length){fail("No hay operadores habilitados en Padre.");enter.disabled=true}
+  if(!data?.length){fail("No hay operadores con PIN habilitado en Padre.");enter.disabled=true}
  }catch(e){
   select.replaceChildren(new Option("No fue posible cargar operadores",""));
   fail("No fue posible cargar el listado de operadores. Comprueba tu conexión.");
@@ -58,7 +60,9 @@
    if(sessionError){fail("No se pudo abrir la sesión de Padre.");return}
    const op=await auth.currentOperator();
    if(!op){await auth.api.auth.signOut({scope:"local"});fail("Esta cuenta aún no está habilitada como operador de Padre.");return}
-   location.replace("./index.html");
+   const {data:pinState,error:pinError}=await auth.api.rpc("padre_mi_pin_estado");
+   if(pinError||!pinState?.length){fail("No fue posible verificar el estado del PIN");return}
+   location.replace(pinState[0].requiere_cambio?"./cambiar-pin.html":"./index.html");
   }catch(e){fail("No se pudo iniciar sesión. Revisa tu clave o contacta al administrador.")}
   finally{enter.disabled=false}
  });

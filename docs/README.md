@@ -21,6 +21,15 @@ El módulo `modulos/dinero.html` carga `modulos/dinero.js` y `finanzas.css`.
 - Los 1.386 pedidos históricos no son deudas reconocidas ni admiten cobros hasta conciliar sus pagos originales.
 - Aún no se ha probado la interfaz en una sesión de navegador con un operador real. Quedan pendientes cierres, saldos a favor, conciliación de históricos y proyectos.
 
+## PIN temporal y cambio obligatorio (octubre 2026)
+
+- El panel de Seguridad permite **solo a Roberto** configurar `0000` a un empleado activo (o activar los que todavía no tengan PIN), con confirmación explícita en la web. **Roberto conserva su clave personal**.
+- El PIN temporal caduca en 24 horas. Los operadores deben ingresar y cambiarlo en `cambiar-pin.html` antes de acceder a los módulos. Los datos operativos quedan protegidos mediante verificaciones en el servidor y políticas restrictivas.
+- Cada empleado únicamente puede cambiar **su propio PIN**, introduciendo el anterior y un nuevo PIN distinto. No se permite visualizar los hashes ni las claves de otros. Una vez actualizado, debe iniciar sesión de nuevo.
+- La creación de PIN y el cambio personal quedan registrados en la auditoría, sin incluir las claves. El servidor comprueba el rol y la identidad de Roberto para el restablecimiento.
+- **Advertencia de seguridad:** usar el mismo PIN provisional para varios empleados facilita la suplantación antes de su cambio. Activar los accesos solo cuando las personas estén listas para cambiarlos inmediatamente; una opción más segura para producción es asignar claves iniciales únicas.
+- El inicio de sesión de los demás operadores **no está confirmado aún por pruebas con sesiones reales**; se mantiene el módulo en estado parcial hasta completar esas validaciones.
+
 ## Seguridad y jerarquías (primer módulo operativo)
 
 - `modulos/seguridad.html`, `modulos/seguridad.js`, `seguridad.css`: consulta de operadores, búsqueda, roles, matriz de 31 permisos por áreas, estado activo/inactivo y historial de decisiones.

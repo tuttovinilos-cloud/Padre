@@ -5,16 +5,18 @@ const U=window.PadreUI;
 const context=await U.useAuth("seguridad_leer");
 if(!context)return;
 const {api,op,root}=context;
-const state={operators:[],roles:[],permissions:[],memberships:[],rolePermissions:[],events:[],selected:null,search:""};
+const state={operators:[],roles:[],permissions:[],memberships:[],rolePermissions:[],events:[],pins:[],selected:null,search:""};
 const wrap=U.h("section",{className:"panel"});
 root.append(wrap);
 wrap.append(U.h("h2",{className:"section-heading",text:"Operadores, jerarquías y permisos"}));
-wrap.append(U.summary("Los permisos de Padre se aplican en el servidor. Esta página no cambia claves ni activa cuentas de acceso. Los pagos solo podrán anularse cuando Contabilidad incorpore su función protegida."));
+wrap.append(U.summary("Los permisos de Padre se aplican en el servidor. Solo Roberto puede activar o restablecer el PIN provisional 0000. Debe cambiarse por uno personal antes de utilizar los módulos. Por seguridad, el PIN provisional vence a las 24 horas."));
 const message=U.h("div"), toolbar=U.h("div",{className:"op-toolbar"}),search=U.h("input",{
  className:"op-search",attrs:{type:"search",placeholder:"Buscar operador…","aria-label":"Buscar operador"}
 });
 const refresh=U.btn("Actualizar datos",()=>load(),true);
 toolbar.append(search,refresh);
+if(op.nombre==="Roberto")toolbar.append(U.btn("Activar operadores sin PIN",activatePending,true));
+toolbar.append(U.btn("Cambiar mi PIN",()=>location.assign("../cambiar-pin.html"),true));
 wrap.append(toolbar,message);
 const counter=U.h("div",{className:"sg-summary"}),listing=U.h("div",{className:"sg-operators"});
 wrap.append(counter,listing);
@@ -66,7 +68,11 @@ function render(){
   top.append(labels);
   const stateChip=U.h("span",{className:"op-chip "+(person.activo?"ok":"off"),text:person.activo?"Activo":"Inactivo"});
   top.append(stateChip);card.append(top);
-  const extra=U.h("p",{className:"op-muted",text:(person.auth_user_id?"Acceso de inicio de sesión vinculado":"Sin acceso de inicio de sesión vinculado")+" · "+effective(person.id).size+" permisos"});
+  const pin=state.pins.find(x=>x.operador_id===person.id);
+  const pinText=pin?.pin_configurado
+   ?(person.auth_user_id?"PIN configurado · Cuenta vinculada":"PIN configurado · Falta primera entrada")
+   :"PIN sin configurar · No puede iniciar sesión";
+  const extra=U.h("p",{className:"op-muted",text:pinText+" · "+effective(person.id).size+" permisos"});
   card.append(extra);
   if(isAdmin()&&!isTargetAdmin(person.id)){
    card.append(U.btn("Configurar permisos",()=>openEditor(person),true));
@@ -74,6 +80,9 @@ function render(){
    card.append(U.h("p",{className:"sg-protected",text:"Perfil administrador protegido"}));
   }else {
    card.append(U.btn("Ver permisos",()=>openEditor(person),true));
+  }
+  if(isAdmin()&&op.nombre==="Roberto"&&person.activo&&person.id!==op.id){
+   card.append(U.btn(pin?.pin_configurado?"Restablecer PIN provisional":"Asignar PIN provisional",()=>openPinEditor(person),true));
   }
   listing.append(card);
  }
@@ -114,8 +123,11 @@ async function load(){
   state.permissions=c.data||[];state.memberships=d.data||[];
   state.rolePermissions=e.data||[];
   const selfAdmin=isAdmin();
-  state.events=[];
+  state.events=[];state.pins=[];
   if(selfAdmin){
+   const pins=await api.rpc("padre_seguridad_estado_pines");
+   if(pins.error)error("No se pudo consultar el estado de los PIN: "+pins.error.message);
+   else state.pins=pins.data||[];
    const hist=await api.from("seguridad_eventos").select("actor_id,operador_id,accion,datos,creado_en").order("creado_en",{ascending:false}).limit(30);
    if(hist.error)error("Se cargaron los operadores, pero el historial no está disponible: "+hist.error.message);
    else state.events=hist.data||[];
@@ -202,6 +214,28 @@ function openEditor(person){
    finally{save.disabled=false}
   });
  }
+}
+async function openPinEditor(person){
+ if(!isAdmin()||op.nombre!=="Roberto"||!person.activo||person.id===op.id)return;
+ if(!confirm("¿Asignar a "+person.nombre+" el PIN provisional 0000? Debe cambiarlo antes de usar Padre y vence en 24 horas. El PIN anterior dejará de funcionar."))return;
+ try{
+  const {data,error:rpcError}=await api.rpc("padre_seguridad_configurar_pin",{
+   p_operador_id:person.id,p_pin:"0000"
+  });
+  if(rpcError||data!==true)throw rpcError||new Error("No se confirmó la operación");
+  await load();
+  error("PIN provisional preparado para "+person.nombre+". Debe ingresar y cambiarlo antes de 24 horas.",true);
+ }catch(e){error("No fue posible asignar el PIN: "+(e?.message||"Error inesperado"))}
+}
+async function activatePending(){
+ if(!isAdmin()||op.nombre!=="Roberto")return;
+ if(!confirm("¿Configurar 0000 para TODOS los operadores activos sin PIN? Cada uno deberá crear su PIN personal antes de usar Padre. Los PIN temporales caducan en 24 horas."))return;
+ try{
+  const {data,error:rpcError}=await api.rpc("padre_seguridad_activar_pendientes");
+  if(rpcError)throw rpcError;
+  await load();
+  error("PIN provisional asignado a "+Number(data||0)+" operador(es). Deben cambiarlo antes de 24 horas.",true);
+ }catch(e){error("No fue posible activar operadores: "+(e?.message||"Error inesperado"))}
 }
 search.addEventListener("input",()=>{state.search=search.value;render()});
 await load();
