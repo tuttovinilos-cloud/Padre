@@ -68,6 +68,14 @@ if(precache){
 }
 const home=load(join(docs,"index.html"));
 for(const mod of modules)check(home.includes('"'+mod+'"'),"Menú: falta enlace de "+mod);
+check(home.includes('id="logoutBtn"')&&home.includes('>Salir</button>'),"Menú: falta el botón visible de Salir");
+check(home.includes('id="accessBtn"')&&home.includes('id="sessionName"'),"Menú: falta distinguir sesión y acceso");
+check(home.includes('./session-controls.js?v=13'),"Menú: no carga el controlador de sesión actualizado");
+const sessionControls=load(join(docs,"session-controls.js"));
+check(sessionControls.includes('auth.currentOperator()'),"Sesión: no verifica el operador actual");
+check(sessionControls.includes('await auth.signOut()'),"Sesión: botón no cierra sesión");
+check(sessionControls.includes('access.hidden=true')&&sessionControls.includes('logout.hidden=false'),"Sesión: no muestra Salir tras validar acceso");
+
 const login=load(join(docs,"login.js"));
 check(login.includes('functions.invoke("padre-pin-login"'),"Login: no utiliza PIN seguro de Padre");
 check(!login.includes("signInWithPassword"),"Login: persiste acceso directo con PIN");

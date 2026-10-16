@@ -114,6 +114,12 @@ h1{font-family:var(--head);font-size:clamp(24px,3vw,35px);line-height:1.2;letter
  .pillar-name{font-size:9px}
  .readonly{white-space:normal;text-align:center;max-width:108px}
 }
+.session-name{font-weight:800;font-size:11px;color:#fff;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.session-name[hidden]{display:none!important}
+.session-logout{background:#fff;color:#a61b30;border-color:#fff}
+.session-logout:hover{background:#fff1f3}
+.session-logout:disabled{opacity:.6;cursor:wait}
+@media(max-width:680px){.session-name{display:none!important}.header-actions{gap:6px}.session-logout{padding:8px 11px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 .pillar,.page-chip{text-decoration:none}
 .map-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px;background:#f8f9ff;border:1px solid var(--border);border-radius:14px}.map-link strong{font:900 13px var(--head)}.map-link p{font-size:12px;margin:4px 0 0;color:var(--muted2)}.map-link a{flex-shrink:0;text-decoration:none;background:var(--accent);color:white;border-radius:9px;padding:10px 12px;font:800 11px var(--head)}
@@ -124,7 +130,12 @@ h1{font-family:var(--head);font-size:clamp(24px,3vw,35px);line-height:1.2;letter
 <header class="topbar">
  <div class="topbar-inner">
   <div class="brand"><div class="brand-mark">T</div><div><span class="brand-label">COMANDA · TUTTOVINILOS</span><small class="brand-subtitle">PADRE · ARQUITECTURA</small></div></div>
-  <div class="header-actions"><a class="pwa-install" href="./login.html" style="text-decoration:none" aria-label="Acceder al sistema Padre">Acceder</a><button class="pwa-install" type="button" id="pwaInstall" aria-label="Instalar Comanda Padre en el teléfono">Instalar app</button></div>
+  <div class="header-actions">
+   <span class="session-name" id="sessionName" hidden></span>
+   <a class="pwa-install" id="accessBtn" href="./login.html" style="text-decoration:none" aria-label="Acceder al sistema Padre">Acceder</a>
+   <button class="pwa-install session-logout" id="logoutBtn" type="button" hidden aria-label="Cerrar sesión y cambiar de operador">Salir</button>
+   <button class="pwa-install" type="button" id="pwaInstall" aria-label="Instalar Comanda Padre en el teléfono">Instalar app</button>
+  </div>
  </div>
 </header>
 <main>
@@ -199,6 +210,10 @@ function hrefFor(slug){return moduleSlugs.includes(slug)?"./modulos/"+slug+".htm
 pillars.forEach((p,i)=>{const a=document.createElement("a");a.className="pillar";a.href=hrefFor(moduleSlugs[i]);a.setAttribute("aria-label","Abrir "+p.name);a.append(makeIcon(p.id));const name=document.createElement("span");name.className="pillar-name";name.textContent=p.name;const no=document.createElement("span");no.className="pillar-index";no.textContent=String(p.id).padStart(2,"0");a.append(name,no);grid.append(a)});
 shortcuts.forEach(([label,slug])=>{const a=document.createElement("a");a.className="page-chip";a.href=hrefFor(slug);a.textContent=label;quickGrid.append(a)});
 </script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0"></script>
+<script defer src="./padre-config.js?v=3"></script>
+<script defer src="./auth.js?v=12"></script>
+<script defer src="./session-controls.js?v=13"></script>
 <script src="./pwa.js?v=2" defer></script>
 </body>
 </html>
