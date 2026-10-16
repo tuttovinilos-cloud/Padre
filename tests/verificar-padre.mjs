@@ -68,6 +68,12 @@ check(seguridad.includes("seguridad_leer"),"Seguridad: no verifica lectura autor
 check(seguridad.includes("dinero_anular"),"Seguridad: no distingue permiso de alto riesgo");
 const securityPage=load(join(docs,"modulos","seguridad.html"));
 check(securityPage.includes("seguridad.js"),"Seguridad: página sin módulo operativo");
+const moneyModule=load(join(docs,"modulos","dinero.js"));
+check(moneyModule.includes("padre_finanzas_registrar"),"Contabilidad: falta el registro de abonos");
+check(moneyModule.includes("padre_finanzas_anular"),"Contabilidad: falta la anulación");
+check(moneyModule.includes("padre_finanzas_pedidos_abiertos"),"Contabilidad: falta la consulta de saldos");
+const moneyPage=load(join(docs,"modulos","dinero.html"));
+check(moneyPage.includes("dinero.js?v=8"),"Contabilidad: página sin script operativo");
 const clientes=load(join(docs,"modulos","clientes.js"));
 check(clientes.includes("tipo_cliente_origen"),"Clientes: no visualiza clasificación original");
 check(!files.some(f=>relative(docs,f).startsWith("js/supabase")),"Código Supabase heredado detectado");

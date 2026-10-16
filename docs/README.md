@@ -2,6 +2,17 @@
 
 Esta carpeta `docs/` es la **raíz pública de GitHub Pages**; mantener exactamente los enlaces existentes.
 
+## Contabilidad: primera etapa operativa
+
+El módulo `modulos/dinero.html` carga `modulos/dinero.js` y `finanzas.css`.
+
+- Resumen de pedidos nuevos, cobros y compras; consulta de saldos de pedidos nuevos en USD.
+- Registro transaccional de abonos en USD o bolívares, con tasa BCV/DIVISA indicada y comprobación del saldo.
+- Anulación auditada con permiso `dinero_anular` y motivo obligatorio; los registros no se borran.
+- SQL versionado en `base_datos/migraciones/`, funciones privilegiadas protegidas en Supabase Padre.
+- Los 1.386 pedidos históricos no son deudas reconocidas ni admiten cobros hasta conciliar sus pagos originales.
+- Aún no se ha probado la interfaz en una sesión de navegador con un operador real. Quedan pendientes cierres, saldos a favor, conciliación de históricos y proyectos.
+
 ## Seguridad y jerarquías (primer módulo operativo)
 
 - `modulos/seguridad.html`, `modulos/seguridad.js`, `seguridad.css`: consulta de operadores, búsqueda, roles, matriz de 31 permisos por áreas, estado activo/inactivo y historial de decisiones.
@@ -9,7 +20,7 @@ Esta carpeta `docs/` es la **raíz pública de GitHub Pages**; mantener exactame
 - El procedimiento transaccional `public.padre_seguridad_guardar_perfil` delega en `private.padre_guardar_perfil_operador`. Los permisos individuales de cada empleado se mantienen separados en un rol `perfil_<uuid>`, evitando modificar a otros usuarios.
 - No está permitido modificar desde este panel al propio administrador ni a otros administradores. `seguridad_gestionar` está reservado para administradores.
 - Revocadas las modificaciones directas en `operadores`, `operadores_roles`, `roles`, `roles_permisos` y `permisos` a los clientes autenticados. Las acciones del panel quedan registradas en `seguridad_eventos`.
-- **Importante:** este panel **no asigna PIN ni activa cuentas de Supabase Auth**. Los operadores que no tienen acceso vinculado aparecen como tales. Conceder `dinero_anular` no crea por sí solo un flujo de anulación: Contabilidad deberá exigirlo al implementar esa función.
+- **Importante:** este panel **no asigna PIN ni activa cuentas de Supabase Auth**. Los operadores que no tienen acceso vinculado aparecen como tales. El primer módulo de Contabilidad ahora exige `dinero_anular` desde el servidor para anular; las futuras operaciones deberán aplicar la misma seguridad.
 - Validar manualmente con Roberto en el navegador y ejecutar pruebas de roles antes de considerar terminada toda el área de Seguridad.
 
 ## Organización funcional

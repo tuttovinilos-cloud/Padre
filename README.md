@@ -9,7 +9,7 @@ Repositorio de **Padre**, el sistema nuevo e independiente de la Comanda actual.
 | Ruta | Responsabilidad |
 | --- | --- |
 | `docs/index.html` | Menú principal de los 13 módulos |
-| `docs/modulos/` | Pantallas por módulo; Clientes y Pedidos tienen código independiente `.js` |
+| `docs/modulos/` | Pantallas por módulo; Clientes, Pedidos, Seguridad y Contabilidad cuentan con código independiente `.js` |
 | `docs/operaciones.js` / `.css` | Componentes visuales comunes |
 | `docs/auth.js`, `docs/login.*`, `docs/padre-config.js` | Autenticación de Padre y configuración **pública** del cliente |
 | `docs/pwa.js`, `docs/sw.js`, `docs/manifest.webmanifest`, `docs/icons/` | Aplicación instalable y caché exclusivamente estática |
@@ -38,6 +38,12 @@ Cada cliente y pedido importado conserva su **registro original íntegro en `dat
 - **Padre (desarrollo):** Supabase propio `cuzswxryqvbguntjvhsa`. Lugar exclusivo para escribir datos de pruebas y desarrollar.
 - **Comanda (producción):** Supabase `ujfdsabypflseijatxba`. Ninguna escritura ni modificación.
 - Código: **este repositorio** `tuttovinilos-cloud/Padre`. No enviar cambios al repositorio Comanda.
+
+## Contabilidad — primera etapa
+
+Padre dispone de un circuito inicial para **abonos y anulaciones de pedidos nuevos**, con permisos diferenciados, tasas BCV/DIVISA indicadas expresamente y auditoría. Se conserva la separación entre compras y cobros. Los **1.386 pedidos históricos** están excluidos de los cálculos de deuda mientras no se concilien sus pagos reales.
+
+Este módulo aún necesita pruebas en navegador y no reemplaza un sistema contable completo. Las migraciones SQL están versionadas en `base_datos/migraciones/`.
 
 ## Web y validaciones
 

@@ -1,0 +1,19 @@
+/* Contabilidad Padre · interfaz responsive */
+.fn-links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.fn-link{font-size:12px;font-weight:800;color:#153bff;text-decoration:none;background:#f8faff;border:1px solid #dbe4fa;border-radius:10px;padding:11px 15px}
+.fn-link:hover{text-decoration:underline}
+.fn-section{margin-top:22px;padding-top:16px;border-top:1px solid #e2e8f0}
+.fn-section>.op-subheading{font-size:15px;font-weight:900}
+.fn-section>.op-muted{line-height:1.65;margin:7px 0 14px}
+.fn-section .op-table th,.fn-section .op-table td{white-space:normal;min-width:100px}
+.fn-section .op-table td:nth-child(3){min-width:190px}
+.fn-section .op-cardlist{margin-top:12px}
+.fn-section .op-chip{white-space:nowrap}
+.fn-section .op-empty{background:#fafbff;border:1px solid #e2e8f0;border-radius:12px}
+.fn-section .op-rowcard{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.fn-section .op-rowcard p{margin:0}
+.fn-section .op-rowcard button{margin-top:6px}
+.fn-section .op-tablewrap{margin-top:10px}
+.fn-section .op-note{margin-bottom:9px}
+@media(min-width:721px){.fn-section .op-cardlist{display:none}}
+@media(max-width:720px){.fn-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.fn-link{text-align:center;padding:10px 6px;font-size:11px}}

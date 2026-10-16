@@ -19,6 +19,14 @@ Las migraciones se registraron en el **historial de migraciones de Supabase Padr
 - El estado de pago original indica **1.338 Pagado**, **44 Pendiente** y **4 Abonado**. **Es información histórica, no un saldo válido de Padre.**
 - Se detectaron dos identificaciones fiscales repetidas en Clientes; no se fusionaron clientes diferentes.
 
+## Contabilidad de Padre: funciones de la primera fase
+
+Migraciones aplicadas en Padre y versionadas en `migraciones/padre_contabilidad_v1.sql` y `migraciones/padre_finanzas_reintentos_v1.sql`.
+
+El núcleo registra abonos solamente sobre pedidos **nuevos en USD** de Padre, mediante una transacción que comprueba permisos y saldo, conserva moneda recibida y tasa si el pago fue en bolívares, crea una aplicación al pedido y registra auditoría. La anulación requiere permiso `dinero_anular` y motivo, sin borrar el recibo. Los reintentos idénticos de una operación identificada por UUID no generan pagos adicionales.
+
+Los pedidos importados siguen en **solo lectura, sin conciliación de pagos**, y no se admiten cobros sobre ellos. No existe conversión automática de los importes históricos. Quedan por diseñar saldos a favor, cierre contable, conciliación con movimientos originales, cuentas de proyectos y otros movimientos.
+
 ## Reglas financieras estrictas
 
 1. Los pedidos importados son **históricos en solo lectura**.

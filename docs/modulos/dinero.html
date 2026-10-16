@@ -11,12 +11,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../page.css?v=1">
+<link rel="stylesheet" href="../operaciones.css?v=4">
+<link rel="stylesheet" href="../finanzas.css?v=8">
 </head>
 <body data-module="dinero">
 <header class="top"><div class="topin"><a class="brand" href="../index.html" aria-label="Menú principal de Padre"><span class="mark">T</span><span>COMANDA · PADRE<small>NUEVO SISTEMA</small></span></a><a href="../index.html" class="go-back">← Volver al menú</a></div></header>
 <main class="container">
 <div class="crumb"><a href="../index.html">Menú principal</a><span>›</span><span id="areaBreadcrumb">Dinero</span></div>
-<section class="intro"><div class="intro-top"><span class="eyebrow" id="areaGroup">PADRE</span><span class="tag">DEMO · SIN BASE DE DATOS</span></div><h1 id="areaTitle">Dinero</h1><p id="areaDescription">Preparando módulo independiente…</p></section>
+<section class="intro"><div class="intro-top"><span class="eyebrow" id="areaGroup">PADRE</span><span class="tag">PADRE · ACCESO PROTEGIDO</span></div><h1 id="areaTitle">Dinero</h1><p id="areaDescription">Cobros, saldos, permisos y movimientos de los pedidos nuevos de Padre.</p></section>
 <div id="moduleRoot"></div>
 </main>
 <nav class="bottom" aria-label="Navegación principal móvil">
@@ -24,8 +26,9 @@
 <a href="./pedidos.html" data-module="pedidos"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span>Pedidos</span></a>
 <a href="./clientes.html" data-module="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 6a3 3 0 0 1 0 6M18 15a5 5 0 0 1 3 5"/></svg><span>Clientes</span></a>
 </nav>
-<div class="modal-wrap" id="detailDialog" hidden role="dialog" aria-modal="true" aria-label="Detalle del pedido ficticio">
- <div class="modal"><h2>Detalle de demostración</h2><dl id="orderDetails"></dl><button id="closeDetails" type="button">Cerrar</button></div>
-</div>
-<script src="../page.js?v=1" defer></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0"></script>
+<script defer src="../padre-config.js?v=3"></script>
+<script defer src="../auth.js?v=3"></script>
+<script defer src="../operaciones.js?v=4"></script>
+<script defer src="./dinero.js?v=8"></script>
 </body></html>
