@@ -17,7 +17,7 @@ BEGIN
  IF p_operacion_id IS NULL THEN RAISE EXCEPTION 'Identificador de operación requerido'; END IF;
  SELECT * INTO v_repetido FROM public.pagos WHERE operacion_id=p_operacion_id;
  IF FOUND THEN
-   IF v_repetido.creado_por IS DISTINCT FROM v_actor
+   IF v_repetido.estado <> 'registrado' OR v_repetido.creado_por IS DISTINCT FROM v_actor
       OR v_repetido.fecha IS DISTINCT FROM p_fecha
       OR btrim(v_repetido.moneda::text) IS DISTINCT FROM p_moneda
       OR v_repetido.monto_recibido IS DISTINCT FROM p_monto
