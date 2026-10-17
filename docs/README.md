@@ -6,7 +6,7 @@ Esta carpeta `docs/` contiene la aplicación web. GitHub Pages publica **desde l
 
 El submódulo `modulos/conciliacion.html` lista los pedidos importados con búsqueda, filtros, paginación y anotaciones de revisión.
 
-Se añadieron funciones autorizadas para consultar y auditar las revisiones. La revisión documental no cambia estados financieros, montos ni deudas. La tabla privada de fuentes documentales contiene **50 comprobantes de 545 referencias históricas identificadas**; faltan **495**. Entre las 50 referencias hay **8 anuladas** y se relacionan con **38 pedidos**. El nuevo control de completitud separa las cuatro fuentes y los anulados. Es una copia documental parcial, NO un libro de cobros, NO se han recalculado saldos.
+Se añadieron funciones autorizadas para consultar y auditar las revisiones. La revisión documental no cambia estados financieros, montos ni deudas. Con los cuatro CSV proporcionados por el usuario el 17 de octubre de 2026 se cargaron **562 de 562 referencias** en la tabla privada: 371 pagos de pedidos, 184 de clientes, 5 de producción y 2 de contabilidad. **512 son nuevas y 50 se conservaron sin duplicar**. Los CSV contienen 20 registros con estado ANULADO en total. Las referencias no equivalen necesariamente a pagos únicos, por relaciones entre fuentes. No se generaron cobros contables ni se recalcularon saldos. Este control es del corte del CSV, NO una sincronización automática.
 
 Esta etapa no sustituye una conciliación monetaria ni implica que los pedidos estén pagados.
 
@@ -57,7 +57,7 @@ Se conecta únicamente al Supabase **Padre**, proyecto `cuzswxryqvbguntjvhsa`. N
 
 ## Datos
 
-La base Padre contiene **454 clientes, 1.386 pedidos y 10 relaciones de contactos** importados desde Comanda. Los conjuntos de identificadores originales coinciden y las fichas originales se guardan como JSONB en la base Padre. **Se guardaron 50 referencias de pagos en tabla privada, pero ningún pago histórico se incorporó al libro financiero `public.pagos`**; los históricos son de solo lectura hasta conciliar. Cinco pedidos no tienen cliente vinculado en el origen. Véase `../base_datos/README.md`.
+La base Padre contiene **454 clientes, 1.386 pedidos y 10 relaciones de contactos** importados desde Comanda. Los conjuntos de identificadores originales coinciden y las fichas originales se guardan como JSONB en la base Padre. **Se guardaron 562 referencias documentales en tabla privada, pero ningún pago histórico se incorporó al libro financiero `public.pagos`**; los históricos son de solo lectura hasta conciliar. Cinco pedidos no tienen cliente vinculado en el origen. Véase `../base_datos/README.md`.
 
 ## Control de calidad
 
